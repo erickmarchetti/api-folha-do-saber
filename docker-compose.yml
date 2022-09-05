@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=1234
+      - DB=api-folha
+      - DB_USER=lagartinho
+      - SECRET_KEY=202fb65de13427c8d95d8975a50c89b0
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+  
+  db:
+    container_name: db
+    image: postgres:14
+    ports:
+      - 5431:5432
+    environment:
+      - POSTGRES_USER=lagartinho
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=api-folha
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lagartinho -d api-folha"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+   
+
