@@ -27,3 +27,4 @@ const authTokenMiddleware = (
     next();
   });
 };
+export default authTokenMiddleware;
