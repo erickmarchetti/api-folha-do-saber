@@ -45,9 +45,6 @@ export class News {
     @Column()
     updatedAt: Date = new Date()
 
-    @OneToOne((type) => News)
-    news: News
-
     @OneToMany((type) => Comments, (comments) => comments.news)
     comments: Comments[]
 
