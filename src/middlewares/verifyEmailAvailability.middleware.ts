@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { AppError } from "../errors/appError"
-import { User } from "../entities/user.entity"
+import { Users } from "../entities/users.entities"
 import AppDataSource from "../data-source"
 
 const verifyEmailAvailabilityMiddleware = async (
@@ -10,7 +10,7 @@ const verifyEmailAvailabilityMiddleware = async (
 ) => {
     const { email } = req.body
 
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepository = AppDataSource.getRepository(Users)
     const users = await userRepository.find()
 
     const emailAlreadyExists = users.find((user) => user.email === email)
