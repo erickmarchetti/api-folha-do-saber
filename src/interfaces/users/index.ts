@@ -2,8 +2,14 @@ export interface IUserRequest {
     name: string
     email: string
     password: string
-    isAdm: boolean
-    isWriter: boolean
+}
+
+export interface IUserPatchRequest {
+    name?: string
+    email?: string
+    password?: string
+    isAdm?: boolean
+    isWriter?: boolean
 }
 
 export interface IUser {
