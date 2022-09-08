@@ -17,6 +17,15 @@ export interface INews {
     updatedAt: string
 }
 
+export interface INewsCreate {
+    title: string
+    subtitle: string
+    urlImage: string
+    categoryId: string
+    body: string
+    createdAt?: string
+}
+
 export interface ICategory {
     id: string
     name: string
