@@ -37,6 +37,12 @@ export interface IWriter {
     profileImage: string
 }
 
+export interface IWriterCreate {
+    userId: string
+    bio: string
+    profileImage: string
+}
+
 export interface IUserLogin {
     email: string
     password: string
