@@ -6,6 +6,7 @@ import writerRouter from "./writer.routes"
 
 const appRoutes = (app: Express) => {
     app.use("/users", userRouter)
+    app.use("/news", newsRouter)
     app.use("/writer", writerRouter)
     app.use("/news", newsRouter)
     app.use("/login", loginRouter)
