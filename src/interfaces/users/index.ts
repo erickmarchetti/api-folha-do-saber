@@ -41,3 +41,10 @@ export interface IUserLogin {
     email: string
     password: string
 }
+
+export interface ResponseLogin {
+    body: {
+        id: string
+        token: string
+    }
+}
