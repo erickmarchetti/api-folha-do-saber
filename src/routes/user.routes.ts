@@ -4,6 +4,8 @@ import createUserController from "../controller/createUser.controller"
 import listUserIdController from "../controller/listUserId.controller"
 import nameEmailPasswordIsRequiredMiddleware from "../middlewares/nameEmailPasswordIsRequired.middleware"
 import verifyEmailAvailabilityMiddleware from "../middlewares/verifyEmailAvailability.middleware"
+import authTokenMiddleware from "../middlewares/authToken.middleware"
+import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
 
 const userRouter = Router()
 
@@ -14,5 +16,10 @@ userRouter.post(
     createUserController
 )
 userRouter.get("", listUserIdController)
-userRouter.delete("/:id", userDeleteController)
+userRouter.delete(
+    "/:id",
+    authTokenMiddleware,
+    authTokenAdmMiddleware,
+    userDeleteController
+)
 export default userRouter
