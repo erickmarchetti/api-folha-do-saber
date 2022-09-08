@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from "typeorm"
 import { v4 as uuid } from "uuid"
 import { Comments } from "./comments.entities"
 import { Writer } from "./writer.entities"
+import { Exclude } from "class-transformer"
 
 @Entity("users")
 export class Users {
@@ -15,6 +16,7 @@ export class Users {
     email: string
 
     @Column()
+    @Exclude()
     password: string
 
     @Column()
