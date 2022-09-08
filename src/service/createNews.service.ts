@@ -30,18 +30,17 @@ const createNewsService = async (
         throw new AppError(404, "Category not found.")
     }
 
-    const news = new News()
-    news.writer = writer
-    news.category = category
-    news.title = title
-    news.subtitle = subtitle
-    news.urlImage = urlImage
-    news.body = body
-    news.createdAt = createdAt ? new Date(createdAt) : new Date()
-    news.updatedAt = new Date()
+    const newNews = await newsRepository.save({
+        writer,
+        category,
+        title,
+        subtitle,
+        urlImage,
+        body,
+        createdAt: createdAt ? new Date(createdAt) : new Date(),
+        updatedAt: new Date()
+    })
 
-    await newsRepository.save(news)
-
-    return news
+    return newNews
 }
 export default createNewsService
