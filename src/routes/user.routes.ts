@@ -5,5 +5,5 @@ import listUserIdController from "../controller/listUserId.controller"
 const userRouter = Router()
 
 userRouter.get("", listUserIdController)
-userRouter.delete("", userDeleteController)
+userRouter.delete("/:id", userDeleteController)
 export default userRouter
