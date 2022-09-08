@@ -23,12 +23,16 @@ const createWriterService = async ({
         throw new AppError(400, "This user is already a writer.")
     }
 
-    const newWriter = await writerRepository.save({
+    user.isWriter = true
+
+    const writer = writerRepository.create({
         user,
         bio,
         profileImage
     })
 
-    return newWriter
+    await writerRepository.save(writer)
+
+    return writer
 }
 export default createWriterService
