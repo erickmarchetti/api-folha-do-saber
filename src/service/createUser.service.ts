@@ -14,7 +14,7 @@ const createUserService = async ({ name, email, password }: IUserRequest) => {
     newUser.email = email
     newUser.password = hashedPassword
 
-    if(users.length == 0){
+    if (users.length == 0) {
         newUser.isAdm = true
     }
 
