@@ -25,9 +25,8 @@ export interface IUser {
 
 export interface IWriterRequest {
     userId: string
-    userData: IUserRequest
     bio: string
-    profileImage: string
+    profileImage?: string
 }
 
 export interface IWriter {
