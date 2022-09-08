@@ -20,10 +20,10 @@ export class Users {
     password: string
 
     @Column()
-    isAdm: boolean = false
+    isAdm: boolean
 
     @Column()
-    isWriter: boolean = false
+    isWriter: boolean
 
     @Column()
     createdAt: Date = new Date()
