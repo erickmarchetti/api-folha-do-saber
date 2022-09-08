@@ -8,10 +8,18 @@ import {
     mockedUser,
     mockedUserLogin
 } from "../../mocks"
+import { ResponseLogin } from "../../../interfaces/users"
 
-let loginAdm
-let loginUser
-let loginWriter
+let loginAdm: ResponseLogin
+let loginUser: ResponseLogin
+let loginWriter: ResponseLogin
+
+let changeName = {
+    name: "teste"
+}
+let changeIsAdm = {
+    isAdm: true
+}
 
 describe("", () => {
     let connection: DataSource
@@ -79,10 +87,33 @@ describe("", () => {
         expect(response.status).toBe(401)
     })
 
-    test("PATCH /users - must be able to change user", async () => {
+    test("PATCH /users/:id - must be able to change user", async () => {
         const response = await request(app)
             .patch(`/users/${loginUser.body.id}`)
             .set("Authorization", `Bearer ${loginUser.body.token}`)
+            .send(changeName)
+
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("name")
+        expect(response.body).toHaveProperty("email")
+        expect(response.body).toHaveProperty("isAdm")
+        expect(response.body).toHaveProperty("isWriter")
+        expect(response.body).toHaveProperty("createdAt")
+        expect(response.body).toHaveProperty("updatedAt")
+        expect(response.body).not.toHaveProperty("password")
+        expect(response.body.name).toEqual(changeName.name)
+        expect(response.body.email).toEqual(mockedUser.email)
+        expect(response.body.isAdm).toEqual(false)
+        expect(response.body.isWriter).toEqual(false)
+
+        expect(response.status).toBe(200)
+    })
+
+    test("PATCH /users/:id - must be able to change user", async () => {
+        const response = await request(app)
+            .patch(`/users/${loginUser.body.id}`)
+            .set("Authorization", `Bearer ${loginUser.body.token}`)
+            .send(changeIsAdm)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
