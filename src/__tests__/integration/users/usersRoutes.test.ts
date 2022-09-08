@@ -2,7 +2,16 @@ import { DataSource } from "typeorm"
 import AppDataSource from "../../../data-source"
 import request from "supertest"
 import app from "../../../app"
-import { mockedUser } from "../../mocks"
+import {
+    mockedAdm,
+    mockedAdmLogin,
+    mockedUser,
+    mockedUserLogin
+} from "../../mocks"
+
+let loginAdm
+let loginUser
+let loginWriter
 
 describe("", () => {
     let connection: DataSource
@@ -15,6 +24,8 @@ describe("", () => {
             .catch((error) => {
                 console.error("Error during Data Source initializatio", error)
             })
+
+        await request(app).post("/users").send(mockedAdm)
     })
 
     afterAll(async () => {
@@ -44,5 +55,36 @@ describe("", () => {
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
+    })
+
+    test("GET /users - must list users", async () => {
+        loginAdm = await request(app).post("/login").send(mockedAdmLogin)
+
+        const response = await request(app)
+            .get("/users")
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        expect(response.body).toHaveLength(2)
+        expect(response.body[0]).not.toHaveProperty("password")
+    })
+
+    test("GET /users - without authorization", async () => {
+        loginUser = await request(app).post("/login").send(mockedUserLogin)
+
+        const response = await request(app)
+            .get("/users")
+            .set("Authorization", `Bearer ${loginUser.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /users - must be able to change user", async () => {
+        const response = await request(app)
+            .patch(`/users/${loginUser.body.id}`)
+            .set("Authorization", `Bearer ${loginUser.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
     })
 })
