@@ -6,11 +6,13 @@ import authTokenMiddleware from "../middlewares/authToken.middleware"
 import authTokenWriterOrAdmMiddleware from "../middlewares/authTokenIsWriterOrAdm.middleware"
 import listAllNewsController from "../controller/listAllNews.controller"
 import listNewsIdController from "../controller/listNewsId.controller"
+import listNewsByWriterController from "../controller/listNewsByWriter.controller"
 
 const newsRouter = Router()
 newsRouter.get("/:id/categories", listNewsByCategoryController)
 newsRouter.get("", listAllNewsController)
 newsRouter.get("/:id", listNewsIdController)
+newsRouter.get("/:id/writers", listNewsByWriterController)
 
 newsRouter.post(
     "",
