@@ -11,7 +11,7 @@ writerRouter.get(
     authTokenMiddleware,
     authTokenAdmMiddleware,
     listWritersController
-
+);
 writerRouter.post(
     "",
     authTokenMiddleware,
