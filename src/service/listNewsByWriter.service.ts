@@ -12,12 +12,9 @@ const listNewsByWriterService = async (writerId: string) => {
         throw new AppError(404, "Writer not found.")
     }
 
-    // const userRepository = AppDataSource.getRepository(Users)
-    // const user = userRepository.findOneBy({writer.user})
-
     const newsRepository = AppDataSource.getRepository(News)
-    const newsList = await newsRepository.find({})
+    const newsList = newsRepository.find({ where: { writer } })
 
-    return writer.user
+    return newsList
 }
 export default listNewsByWriterService
