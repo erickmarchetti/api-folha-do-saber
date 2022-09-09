@@ -13,6 +13,6 @@ const createNewsController = async (req: Request, res: Response) => {
         body,
         createdAt
     })
-    return res.status(200).json(instanceToPlain(newNews))
+    return res.status(201).json(instanceToPlain(newNews))
 }
 export default createNewsController

@@ -9,6 +9,6 @@ const createWriterController = async (req: Request, res: Response) => {
         bio,
         profileImage
     })
-    return res.status(200).json(instanceToPlain(createWriter))
+    return res.status(201).json(instanceToPlain(createWriter))
 }
 export default createWriterController

@@ -16,12 +16,23 @@ userRouter.post(
     verifyEmailAvailabilityMiddleware,
     createUserController
 )
+
 userRouter.get("", listUserIdController)
+
 userRouter.delete("", userDeleteController)
+
 userRouter.patch(
     "/:id",
     authTokenMiddleware,
     authTokenAdmMiddleware,
     updateUserController
+
+userRouter.delete(
+    "/:id",
+    authTokenMiddleware,
+    authTokenAdmMiddleware,
+    userDeleteController
+
 )
+
 export default userRouter
