@@ -20,7 +20,6 @@ const authTokenMiddleware = (
         process.env.SECRET_KEY as string,
         (error: any, decoded: any) => {
             if (error) {
-                console.log(error)
                 return res.status(401).json({ message: "Invalid token !" })
             }
             req.user = {

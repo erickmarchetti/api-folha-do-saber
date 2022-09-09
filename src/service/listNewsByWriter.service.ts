@@ -1,5 +1,6 @@
 import AppDataSource from "../data-source"
 import { News } from "../entities/news.entities"
+import { Users } from "../entities/users.entities"
 import { Writer } from "../entities/writer.entities"
 import { AppError } from "../errors/appError"
 

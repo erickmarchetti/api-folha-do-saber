@@ -4,6 +4,7 @@ import createUserController from "../controller/createUser.controller"
 import listUserIdController from "../controller/listUserId.controller"
 import nameEmailPasswordIsRequiredMiddleware from "../middlewares/nameEmailPasswordIsRequired.middleware"
 import verifyEmailAvailabilityMiddleware from "../middlewares/verifyEmailAvailability.middleware"
+import updateUserController from "../controller/updateUser.controller"
 import authTokenMiddleware from "../middlewares/authToken.middleware"
 import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
 
@@ -15,11 +16,24 @@ userRouter.post(
     verifyEmailAvailabilityMiddleware,
     createUserController
 )
+
 userRouter.get("", listUserIdController)
+
+userRouter.delete("", userDeleteController)
+
+userRouter.patch(
+    "/:id",
+    authTokenMiddleware,
+    authTokenAdmMiddleware,
+    updateUserController
+)
+
 userRouter.delete(
     "/:id",
     authTokenMiddleware,
     authTokenAdmMiddleware,
     userDeleteController
+
 )
+
 export default userRouter
