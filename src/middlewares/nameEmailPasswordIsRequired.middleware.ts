@@ -6,7 +6,7 @@ const nameEmailPasswordIsRequiredMiddleware = async (
     res: Response,
     next: NextFunction
 ) => {
-    const {name, email, password} = req.body    
+    const { name, email, password } = req.body
 
     if (!name) {
         throw new AppError(400, "Name is required")
@@ -19,7 +19,7 @@ const nameEmailPasswordIsRequiredMiddleware = async (
     if (!password) {
         throw new AppError(400, "Password is required")
     }
- 
+
     next()
 }
 

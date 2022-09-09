@@ -15,7 +15,10 @@ export class Writer {
     @PrimaryColumn("uuid")
     readonly id: string
 
-    @OneToOne((type) => Users, { eager: true })
+    @OneToOne((type) => Users, (user) => user.writer, {
+        eager: true,
+        nullable: false
+    })
     @JoinColumn({ name: "userId" })
     user: Users
 
