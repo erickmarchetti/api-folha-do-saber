@@ -23,7 +23,7 @@ export const mockedAdmLogin: IUserLogin = {
 }
 
 export const mockedWriter: IWriterCreate = {
-    bio: "Amo escrever testes",
+    bio: "amo escrever testes",
     profileImage: "image url",
     userId: ""
 }
