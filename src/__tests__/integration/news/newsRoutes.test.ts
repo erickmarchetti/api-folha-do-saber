@@ -4,14 +4,12 @@ import request from "supertest"
 import app from "../../../app"
 import { mockedAdmLogin } from "../../mocks"
 
-const mockedUser = {}
 const mockedWriter = {}
-const mockedAdmin = {}
 const mockedUserLogin = {}
 const mockedWriterLogin = {}
 const mockedNews = {}
 
-describe("Tests news routes", () => {
+describe("Tests News routes", () => {
     let connection: DataSource
 
     beforeAll(async () => {
@@ -23,9 +21,9 @@ describe("Tests news routes", () => {
                 console.error("Error during Data Source initializatio", error)
             })
 
-        await request(app).post("/users").send(mockedUser)
-        await request(app).post("/users").send(mockedWriter)
-        await request(app).post("/users").send(mockedAdmin)
+        // await request(app).post("/users").send(mockedUser)
+        // await request(app).post("/users").send(mockedWriter)
+        // await request(app).post("/users").send(mockedAdmin)
 
         const adminLoginResponse = await request(app)
             .post("/login")
@@ -96,11 +94,12 @@ describe("Tests news routes", () => {
 
     test("GET /news  -  Must be able to return all news", async () => {
         const response = await request(app).get("/news")
-        expect(response.body).toHaveProperty("map") //verificar jeito melhor
+
+        expect(response.body).toHaveProperty("map")
         expect(response.status).toBe(200)
     })
 
-    test("GET - /news:id  -  Must be able to return new by id", async () => {
+    test("GET - /news/:id  -  Must be able to return new by id", async () => {
         const news = await request(app).get("/news")
         const response = await request(app).get(`/news/${news.body[0].id}`)
 
@@ -115,7 +114,7 @@ describe("Tests news routes", () => {
         expect(response.status).toBe(200)
     })
 
-    test("GET /news:id - Must not be able to list new without a valid id", async () => {
+    test("GET /news/:id - Must not be able to list new without a valid id", async () => {
         const response = await request(app).get(
             "/news/25698547-5cds-423b-8a8d-5c23b35846kp"
         )
@@ -130,7 +129,7 @@ describe("Tests news routes", () => {
             `/news/${news.body[0].category.id}/categories`
         )
 
-        expect(response.body).toHaveProperty("map") //verificar jeito melhor
+        expect(response.body).toHaveProperty("map")
         expect(response.status).toBe(200)
     })
 
@@ -149,7 +148,7 @@ describe("Tests news routes", () => {
             `/news/${news.body[0].writer.id}/writers`
         )
 
-        expect(response.body).toHaveProperty("map") //verificar jeito melhor
+        expect(response.body).toHaveProperty("map")
         expect(response.status).toBe(200)
     })
 
