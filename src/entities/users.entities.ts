@@ -20,10 +20,10 @@ export class Users {
     password: string
 
     @Column()
-    isAdm: boolean = false
+    isAdm: boolean
 
     @Column()
-    isWriter: boolean = false
+    isWriter: boolean
 
     @Column()
     createdAt: Date = new Date()
@@ -31,7 +31,7 @@ export class Users {
     @Column()
     updatedAt: Date = new Date()
 
-    @OneToOne((type) => Writer)
+    @OneToOne((type) => Writer, (writer) => writer.user)
     writer: Writer
 
     @OneToMany((type) => Comments, (comments) => comments.user)

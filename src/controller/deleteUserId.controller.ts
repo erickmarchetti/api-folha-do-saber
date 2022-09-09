@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import userDeleteService from "../service/deleteUserId.service"
+import userDeleteService from "../service/deleteUser.service"
 
 const userDeleteController = async (req: Request, res: Response) => {
     const id = req.params.id

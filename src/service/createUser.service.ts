@@ -13,10 +13,8 @@ const createUserService = async ({ name, email, password }: IUserRequest) => {
     newUser.name = name
     newUser.email = email
     newUser.password = hashedPassword
-
-    if(users.length == 0){
-        newUser.isAdm = true
-    }
+    newUser.isAdm = users.length === 0 ? true : false
+    newUser.isWriter = false
 
     userRepository.create(newUser)
 
