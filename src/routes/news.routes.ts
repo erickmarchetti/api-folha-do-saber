@@ -10,6 +10,8 @@ import listNewsByWriterController from "../controller/listNewsByWriter.controlle
 import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
 import newsBelongsToTheUserMiddleware from "../middlewares/newsBelongsToTheUser.middleware"
 import deleteNewsIdController from "../controller/deleteNewsId.controller"
+import writerIsHimselfMiddleware from "../middlewares/writerIsHimself.middleware"
+import updateNewsController from "../controller/updateNews.controller"
 
 const newsRouter = Router()
 newsRouter.get("/:id/categories", listNewsByCategoryController)
@@ -28,6 +30,13 @@ newsRouter.post(
     authTokenMiddleware,
     authTokenWriterOrAdmMiddleware,
     createNewsController
+)
+
+newsRouter.patch(
+    "/:id",
+    authTokenWriterOrAdmMiddleware,
+    writerIsHimselfMiddleware,
+    updateNewsController
 )
 
 export default newsRouter
