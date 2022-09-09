@@ -31,7 +31,7 @@ export class Users {
     @Column()
     updatedAt: Date = new Date()
 
-    @OneToOne((type) => Writer)
+    @OneToOne((type) => Writer, (writer) => writer.user)
     writer: Writer
 
     @OneToMany((type) => Comments, (comments) => comments.user)
