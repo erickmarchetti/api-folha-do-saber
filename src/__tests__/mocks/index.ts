@@ -1,4 +1,4 @@
-import { IUserLogin, IUserRequest } from "../../interfaces/users"
+import { IUserLogin, IUserRequest, IWriterCreate } from "../../interfaces/users"
 
 export const mockedUser: IUserRequest = {
     email: "erick@gmail.com",
@@ -20,4 +20,10 @@ export const mockedAdm: IUserRequest = {
 export const mockedAdmLogin: IUserLogin = {
     email: "adm@gmail.com",
     password: "senha"
+}
+
+export const mockedWriter: IWriterCreate = {
+    bio: "amo escrever testes",
+    profileImage: "image url",
+    userId: ""
 }
