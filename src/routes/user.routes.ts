@@ -26,6 +26,7 @@ userRouter.patch(
     authTokenMiddleware,
     authTokenAdmMiddleware,
     updateUserController
+)
 
 userRouter.delete(
     "/:id",
