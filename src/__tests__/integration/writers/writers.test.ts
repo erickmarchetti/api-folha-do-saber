@@ -30,6 +30,11 @@ describe("Tests Writers Routes", () => {
 
         await request(app).post("/users").send(mockedAdm)
         await request(app).post("/users").send(mockedUser)
+        await request(app).post("/users").send({
+            email: "tonho@gmail.com",
+            name: "Tonho",
+            password: "1234"
+        })
         adminLoginResponse = await request(app)
             .post("/login")
             .send(mockedAdmLogin)
@@ -38,7 +43,6 @@ describe("Tests Writers Routes", () => {
             .send(mockedUserLogin)
         userLoginResponse = await request(app).post("/login").send({
             email: "tonho@gmail.com",
-            name: "Tonho",
             password: "1234"
         })
     })
@@ -148,6 +152,6 @@ describe("Tests Writers Routes", () => {
             .send({ bio: "Amo escrever testes - id invalido" })
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(404)
     })
 })
