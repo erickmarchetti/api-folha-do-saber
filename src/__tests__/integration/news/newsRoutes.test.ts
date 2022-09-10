@@ -2,12 +2,22 @@ import { DataSource } from "typeorm"
 import AppDataSource from "../../../data-source"
 import request from "supertest"
 import app from "../../../app"
-import { mockedAdmLogin } from "../../mocks"
+import {
+    mockedAdm,
+    mockedAdmLogin,
+    mockedNews,
+    mockedUser,
+    mockedUserLogin,
+    mockedWriter
+} from "../../mocks"
+import { IWriter, ResponseLogin } from "../../../interfaces/users"
+import { INews } from "../../../interfaces/news"
 
-const mockedWriter = {}
-const mockedUserLogin = {}
-const mockedWriterLogin = {}
-const mockedNews = {}
+let adminLoginResponse: ResponseLogin
+let userWriterLoginResp: ResponseLogin
+let writer: IWriter
+let userLoginResponse: ResponseLogin
+let news: INews
 
 describe("Tests News routes", () => {
     let connection: DataSource
@@ -21,17 +31,29 @@ describe("Tests News routes", () => {
                 console.error("Error during Data Source initializatio", error)
             })
 
-        // await request(app).post("/users").send(mockedUser)
-        // await request(app).post("/users").send(mockedWriter)
-        // await request(app).post("/users").send(mockedAdmin)
+        await request(app).post("/users").send(mockedAdm)
+        await request(app).post("/users").send(mockedUser)
 
-        const adminLoginResponse = await request(app)
+        adminLoginResponse = await request(app)
             .post("/login")
             .send(mockedAdmLogin)
 
-        const writerLoginResponse = await request(app)
+        userWriterLoginResp = await request(app)
             .post("/login")
-            .send(mockedWriterLogin)
+            .send(mockedUserLogin)
+        mockedWriter.userId = userWriterLoginResp.body.id
+
+        const writerResponse = await request(app)
+            .post("/writer")
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+            .send(mockedWriter)
+        writer = writerResponse.body
+
+        userLoginResponse = await request(app).post("/login").send({
+            email: "tonho@gmail.com",
+            name: "Tonho",
+            password: "1234"
+        })
     })
 
     afterAll(async () => {
@@ -39,14 +61,13 @@ describe("Tests News routes", () => {
     })
 
     test("POST /news  -  Admin must be able to create a new", async () => {
-        const adminLoginResponse = await request(app)
-            .post("/login")
-            .send(mockedAdmLogin)
-
+        mockedNews.writerId = writer.id
         const response = await request(app)
             .post("/news")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send(mockedNews)
+
+        news = response.body
 
         expect(response.body).toHaveProperty("writer")
         expect(response.body).toHaveProperty("category")
@@ -60,12 +81,10 @@ describe("Tests News routes", () => {
     })
 
     test("POST /news  -  Writer must be able to create a new", async () => {
-        const writerLoginResponse = await request(app)
-            .post("/login")
-            .send(mockedWriterLogin)
+        mockedNews.writerId = writer.id
         const response = await request(app)
             .post("/news")
-            .set("Authorization", `Bearer ${writerLoginResponse.body.token}`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
             .send(mockedNews)
 
         expect(response.body).toHaveProperty("writer")
@@ -80,13 +99,17 @@ describe("Tests News routes", () => {
     })
 
     test("POST /news -  Must not be able to create a new without valid token", async () => {
-        const userLoginResponse = await request(app)
-            .post("/login")
-            .send(mockedUserLogin)
         const response = await request(app)
             .post("/news")
             .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
             .send(mockedNews)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("POST /news -  Must not be able to create a new without a token", async () => {
+        const response = await request(app).post("/news").send(mockedNews)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
@@ -99,7 +122,7 @@ describe("Tests News routes", () => {
         expect(response.status).toBe(200)
     })
 
-    test("GET - /news/:id  -  Must be able to return new by id", async () => {
+    test("GET - /news/:id  -  Must be able to return news by id", async () => {
         const news = await request(app).get("/news")
         const response = await request(app).get(`/news/${news.body[0].id}`)
 
@@ -114,7 +137,7 @@ describe("Tests News routes", () => {
         expect(response.status).toBe(200)
     })
 
-    test("GET /news/:id - Must not be able to list new without a valid id", async () => {
+    test("GET /news/:id - Must not be able to list news without a valid id", async () => {
         const response = await request(app).get(
             "/news/25698547-5cds-423b-8a8d-5c23b35846kp"
         )
@@ -159,5 +182,95 @@ describe("Tests News routes", () => {
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
+    })
+
+    test("PATCH /news/:id - Admin must be able to change news data", async () => {
+        const response = await request(app)
+            .patch(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+            .send({ title: "Lagarta come folhas - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(200)
+    })
+
+    test("PATCH /news/:id - Writer must be able to change his own news", async () => {
+        const response = await request(app)
+            .patch(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .send({ title: "Lagarta come folhas - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(200)
+    })
+
+    test("PATCH /news/:id - Must not be able to change news data without a valid token", async () => {
+        const response = await request(app)
+            .patch(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
+            .send({ title: "Lagarta come folhas - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /news/:id - Must not be able to change news data without a token", async () => {
+        const response = await request(app)
+            .patch(`/news/${news.id}`)
+            .send({ title: "Lagarta come folhas - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /news/:id - Must not be able to change news data without a valid id", async () => {
+        const response = await request(app)
+            .patch(`/news/25698547-5cds-423b-8a8d-5c23b35846kp`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .send({ title: "Lagarta come folhas - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("DELETE /news/:id - Admin must be able to delete news", async () => {
+        const response = await request(app)
+            .delete(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+
+        expect(response.status).toBe(204)
+    })
+
+    test("DELETE /news/:id - Writer must be able to delete his own news", async () => {
+        const response = await request(app)
+            .delete(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+
+        expect(response.status).toBe(204)
+    })
+
+    test("DELETE /news/:id - Must not be able to delete news without a valid token", async () => {
+        const response = await request(app)
+            .delete(`/news/${news.id}`)
+            .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("DELETE /news/:id - Must not be able to delete news without a token", async () => {
+        const response = await request(app).delete(`/news/${news.id}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("DELETE /news/:id - Must not be able to delete news without a valid id", async () => {
+        const response = await request(app)
+            .delete(`/news/25698547-5cds-423b-8a8d-5c23b35846kp`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
     })
 })
