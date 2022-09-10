@@ -9,10 +9,12 @@ import {
     mockedUserLogin,
     mockedWriter
 } from "../../mocks"
-import { ResponseLogin } from "../../../interfaces/users"
+import { IWriter, ResponseLogin } from "../../../interfaces/users"
 
 let adminLoginResponse: ResponseLogin
+let userWriterLoginResp: ResponseLogin
 let userLoginResponse: ResponseLogin
+let mockedWriterResponse: IWriter
 
 describe("Tests Writers Routes", () => {
     let connection: DataSource
@@ -31,9 +33,14 @@ describe("Tests Writers Routes", () => {
         adminLoginResponse = await request(app)
             .post("/login")
             .send(mockedAdmLogin)
-        userLoginResponse = await request(app)
+        userWriterLoginResp = await request(app)
             .post("/login")
             .send(mockedUserLogin)
+        userLoginResponse = await request(app).post("/login").send({
+            email: "tonho@gmail.com",
+            name: "Tonho",
+            password: "1234"
+        })
     })
 
     afterAll(async () => {
@@ -41,11 +48,13 @@ describe("Tests Writers Routes", () => {
     })
 
     test("POST /writer - Admin must be able to create a Writer", async () => {
-        mockedWriter.userId = userLoginResponse.body.id
+        mockedWriter.userId = userWriterLoginResp.body.id
         const response = await request(app)
             .post("/writer")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send(mockedWriter)
+
+        mockedWriterResponse = response.body
 
         expect(response.body).toHaveProperty("id")
         expect(response.body).toHaveProperty("profileImage")
@@ -56,7 +65,7 @@ describe("Tests Writers Routes", () => {
     })
 
     test("POST /writer - Must not be able to create a writer that already exists", async () => {
-        mockedWriter.userId = userLoginResponse.body.id
+        mockedWriter.userId = userWriterLoginResp.body.id
         const response = await request(app)
             .post("/writer")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
@@ -69,7 +78,7 @@ describe("Tests Writers Routes", () => {
     test("POST /writer - Must not be able to create writer without valid token", async () => {
         const response = await request(app)
             .post("/writer")
-            .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
@@ -87,7 +96,56 @@ describe("Tests Writers Routes", () => {
     test("GET /writer - Must be not able list all writers if not admin", async () => {
         const response = await request(app)
             .get("/writer")
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /writer/:id - Admin must be able to change writer data", async () => {
+        const response = await request(app)
+            .patch(`/writer/${mockedWriterResponse.id}`)
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+            .send({ bio: "Amo escrever testes - Admin" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(200)
+    })
+
+    test("PATCH /writer/:id - Writer himself must be able to change data", async () => {
+        const response = await request(app)
+            .patch(`/writer/${mockedWriterResponse.id}`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .send({ bio: "Amo escrever testes - Escritor" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(200)
+    })
+
+    test("PATCH /writer/:id - Must not be able to change writer data without a valid token", async () => {
+        const response = await request(app)
+            .patch(`/writer/${mockedWriterResponse.id}`)
             .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
+            .send({ bio: "Amo escrever testes - Usuário" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /writer/:id - Must not be able to change writer data without a token", async () => {
+        const response = await request(app)
+            .patch(`/writer/${mockedWriterResponse.id}`)
+            .send({ bio: "Amo escrever testes - Usuário" })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("PATCH /writer/:id - Must not be able to change writer data without a valid id", async () => {
+        const response = await request(app)
+            .patch(`/writer/25698547-5cds-423b-8a8d-5c23b35846kp`)
+            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .send({ bio: "Amo escrever testes - id invalido" })
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
