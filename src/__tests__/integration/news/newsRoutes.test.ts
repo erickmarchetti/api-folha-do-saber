@@ -143,7 +143,7 @@ describe("Tests News routes", () => {
         )
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(404)
     })
 
     test("GET /news/:categoryId/categories - Must be able list all news of selected category", async () => {
@@ -162,7 +162,7 @@ describe("Tests News routes", () => {
         )
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(404)
     })
 
     test("GET /news/:writerId/writers - Must be able list all news of selected writer", async () => {
@@ -181,7 +181,7 @@ describe("Tests News routes", () => {
         )
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(404)
     })
 
     test("PATCH /news/:id - Admin must be able to change news data", async () => {
@@ -230,7 +230,7 @@ describe("Tests News routes", () => {
             .send({ title: "Lagarta come folhas - Admin" })
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(404)
     })
 
     test("DELETE /news/:id - Admin must be able to delete news", async () => {
@@ -271,6 +271,6 @@ describe("Tests News routes", () => {
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(404)
     })
 })
