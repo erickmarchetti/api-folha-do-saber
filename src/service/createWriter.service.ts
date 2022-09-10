@@ -23,13 +23,18 @@ const createWriterService = async ({
         throw new AppError(400, "This user is already a writer.")
     }
 
-    user.isWriter = true
+    await userRepository.update(user, { isWriter: true })
 
-    const writer = writerRepository.create({
-        user,
-        bio,
-        profileImage
-    })
+    const updatedUser = await userRepository.findOneBy({ id: userId })
+
+    if (!updatedUser) {
+        throw new AppError(404, "User not found.")
+    }
+
+    const writer = new Writer()
+    writer.user = updatedUser
+    writer.bio = bio
+    writer.profileImage = profileImage
 
     await writerRepository.save(writer)
 
