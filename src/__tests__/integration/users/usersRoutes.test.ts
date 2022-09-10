@@ -249,4 +249,95 @@ describe("Tests Users routes", () => {
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
     })
+
+    test("DELETE /users/:id - must be able to delete a user", async () => {
+        await request(app).post("/users").send({
+            name: "deleted user",
+            email: "deletedUser@gmail.com",
+            password: "1234"
+        })
+
+        const loginDeletedUser = await request(app).post("/login").send({
+            email: "deletedUser@gmail.com",
+            password: "1234"
+        })
+
+        const listUsers = await request(app)
+            .get(`/users`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        const response = await request(app)
+            .delete(`/users/${loginDeletedUser.body.id}`)
+            .set("Authorization", `Bearer ${loginDeletedUser.body.token}`)
+
+        const listUsersTwo = await request(app)
+            .get(`/users`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        expect(listUsers.body).toHaveLength(8)
+        expect(response.status).toBe(204)
+        expect(listUsersTwo.body).toHaveLength(7)
+    })
+
+    test("DELETE /users/:id - must be able to delete a user being an admin", async () => {
+        await request(app).post("/users").send({
+            name: "deleted user",
+            email: "deletedUser@gmail.com",
+            password: "1234"
+        })
+
+        const loginDeletedUser = await request(app).post("/login").send({
+            email: "deletedUser@gmail.com",
+            password: "1234"
+        })
+
+        const listUsers = await request(app)
+            .get(`/users`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        const response = await request(app)
+            .delete(`/users/${loginDeletedUser.body.id}`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        const listUsersTwo = await request(app)
+            .get(`/users`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        expect(listUsers.body).toHaveLength(8)
+        expect(response.status).toBe(204)
+        expect(listUsersTwo.body).toHaveLength(7)
+    })
+
+    test("DELETE /users/:id - cannot delete another user without authorization", async () => {
+        const deletedUser = await request(app).post("/users").send({
+            name: "deleted user",
+            email: "deletedUser@gmail.com",
+            password: "1234"
+        })
+
+        const response = await request(app)
+            .delete(`/users/${deletedUser.body.id}`)
+            .set("Authorization", `Bearer ${loginUser.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("DELETE /users/:id - without token", async () => {
+        const response = await request(app).delete(
+            `/users/${loginUser.body.id}`
+        )
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    test("DELETE /users/:id - id does not exist", async () => {
+        const response = await request(app)
+            .delete(`/users/0af9d870-30a2-11ed-a261-0242ac120002`)
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(404)
+    })
 })
