@@ -30,10 +30,9 @@ export const mockedWriter: IWriterCreate = {
 }
 
 export const mockedNews: INewsRequest = {
-    writerId: "",
     title: "Lagarta come folha",
     subtitle: "Crise afeta lagarta",
     urlImage: "image.png",
-    categoryId: "Curiosidades",
+    category: "Curiosidades",
     body: "Lagarta em crise comeu muitas folhas. Estava ansiosa."
 }
