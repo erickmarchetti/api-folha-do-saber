@@ -1,9 +1,9 @@
 import { Router } from "express"
-import listWritersController from "../controller/listWriters.controller"
-import createWriterController from "../controller/createWriter.controller"
+import listWritersController from "../controller/writers/listWriters.controller"
+import createWriterController from "../controller/writers/createWriter.controller"
 import authTokenMiddleware from "../middlewares/authToken.middleware"
 import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
-import updateWriterController from "../controller/updateWriter.controller"
+import updateWriterController from "../controller/writers/updateWriter.controller"
 import writerIsHimselfMiddleware from "../middlewares/writerIsHimself.middleware"
 
 const writerRouter = Router()
