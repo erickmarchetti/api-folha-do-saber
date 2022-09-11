@@ -152,6 +152,6 @@ describe("Tests Writers Routes", () => {
             .send({ bio: "Amo escrever testes - id invalido" })
 
         expect(response.body).toHaveProperty("message")
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(404)
     })
 })
