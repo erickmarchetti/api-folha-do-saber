@@ -1,4 +1,3 @@
-import { INewsRequest } from "../../interfaces/news"
 import { IUserLogin, IUserRequest, IWriterCreate } from "../../interfaces/users"
 
 export const mockedUser: IUserRequest = {
@@ -27,12 +26,4 @@ export const mockedWriter: IWriterCreate = {
     bio: "amo escrever testes",
     profileImage: "image url",
     userId: ""
-}
-
-export const mockedNews: INewsRequest = {
-    title: "Lagarta come folha",
-    subtitle: "Crise afeta lagarta",
-    urlImage: "image.png",
-    category: "Curiosidades",
-    body: "Lagarta em crise comeu muitas folhas. Estava ansiosa."
 }
