@@ -88,6 +88,19 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(401)
     })
 
+    test("POST /writer - must not create with an invalid userid", async () => {
+        const response = await request(app)
+            .post("/writer")
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+            .send({
+                ...mockedWriter,
+                userId: "34d82b8a-e5e0-4d46-adf2-1d1c81878bce"
+            })
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(404)
+    })
+
     test("GET /writer - Admin must be able list all writers", async () => {
         const response = await request(app)
             .get("/writer")
@@ -106,6 +119,14 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(401)
     })
 
+    test("GET /writer - without token", async () => {
+        const response = await request(app).get("/writer")
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(401)
+    })
+
+    // Poderia retornar todos os dados e conferir se a alteração deu certo
     test("PATCH /writer/:id - Admin must be able to change writer data", async () => {
         const response = await request(app)
             .patch(`/writer/${mockedWriterResponse.id}`)
@@ -116,6 +137,7 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(200)
     })
 
+    // Poderia retornar todos os dados e conferir se a alteração deu certo
     test("PATCH /writer/:id - Writer himself must be able to change data", async () => {
         const response = await request(app)
             .patch(`/writer/${mockedWriterResponse.id}`)
@@ -148,7 +170,7 @@ describe("Tests Writers Routes", () => {
     test("PATCH /writer/:id - Must not be able to change writer data without a valid id", async () => {
         const response = await request(app)
             .patch(`/writer/25698547-5cds-423b-8a8d-5c23b35846kp`)
-            .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send({ bio: "Amo escrever testes - id invalido" })
 
         expect(response.body).toHaveProperty("message")
