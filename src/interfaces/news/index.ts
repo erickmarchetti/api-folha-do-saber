@@ -3,15 +3,16 @@ export interface INewsRequest {
     title: string
     subtitle: string
     urlImage: string
-    categoryId: string
+    category: string
     body: string
 }
 
 export interface INews {
+    id: string
     title: string
     subtitle: string
     urlImage: string
-    categoryId: string
+    category: string
     body: string
     createdAt: string
     updatedAt: string
@@ -21,7 +22,7 @@ export interface INewsCreate {
     title: string
     subtitle: string
     urlImage: string
-    categoryId: string
+    category: string
     body: string
     createdAt?: string
 }
