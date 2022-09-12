@@ -20,11 +20,15 @@ const updateUserService = async (
         relations: { writer: true }
     })
 
-    if ((patchRequest.isAdm || patchRequest.isWriter) && !reqInfos.isAdm) {
+    if (
+        (patchRequest.isAdm !== undefined ||
+            patchRequest.isWriter !== undefined) &&
+        !reqInfos.isAdm
+    ) {
         throw new AppError(401, "Admin permission is required")
     }
 
-    if (patchRequest.isWriter && !user!.writer) {
+    if (patchRequest.isWriter !== undefined && !user!.writer) {
         throw new AppError(401, "User is not a writer")
     }
 
@@ -50,11 +54,7 @@ const updateUserService = async (
                 : user!.isWriter
     })
 
-    const updatedUser = userRepository
-        .createQueryBuilder("users")
-        .innerJoinAndSelect("users.writer", "writer")
-        .where("users.id = :id", { id: patchRequest.id })
-        .getMany()
+    const updatedUser = await userRepository.findOneBy({ id: patchRequest.id })
 
     return updatedUser
 }
