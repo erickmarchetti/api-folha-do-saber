@@ -1,10 +1,10 @@
 export interface INewsRequest {
-    writerId: string
     title: string
     subtitle: string
     urlImage: string
     category: string
     body: string
+    createdAt?: string
 }
 
 export interface INews {
@@ -16,15 +16,6 @@ export interface INews {
     body: string
     createdAt: string
     updatedAt: string
-}
-
-export interface INewsCreate {
-    title: string
-    subtitle: string
-    urlImage: string
-    category: string
-    body: string
-    createdAt?: string
 }
 
 export interface ICategory {
