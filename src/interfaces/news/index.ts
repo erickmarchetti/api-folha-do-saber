@@ -17,7 +17,6 @@ export interface INews {
     createdAt: string
     updatedAt: string
 }
-
 export interface ICategory {
     id: string
     name: string

@@ -24,8 +24,8 @@ const newsBelongsToTheUserMiddleware = async (
         relations: { writer: true }
     })
 
-    if (targetNews!.writer.id !== targetUser!.writer.id && !req.user.isAdm) {
-        throw new AppError(403, "Unauthorized")
+    if (targetNews!.writer?.id !== targetUser!.writer?.id && !req.user.isAdm) {
+        throw new AppError(401, "Unauthorized")
     }
 
     next()

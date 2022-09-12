@@ -1,44 +1,54 @@
 import AppDataSource from "../../data-source"
 import { Categories } from "../../entities/categories.entities"
 import { News } from "../../entities/news.entities"
-import { Writer } from "../../entities/writer.entities"
+import { Users } from "../../entities/users.entities"
 import { AppError } from "../../errors/appError"
 import { INewsRequest } from "../../interfaces/news"
 
 const createNewsService = async (
-    writerId: string,
+    userId: string,
     { title, subtitle, urlImage, category, body, createdAt }: INewsRequest
 ) => {
     const newsRepository = AppDataSource.getRepository(News)
-    const newsAlreadyExists = await newsRepository.findOneBy({ title })
+    const userRepository = AppDataSource.getRepository(Users)
+    const categoryRepository = AppDataSource.getRepository(Categories)
 
-    if (newsAlreadyExists) {
-        throw new AppError(400, "This news already exists.")
-    }
+    const user = await userRepository.findOne({
+        where: {
+            id: userId
+        },
+        relations: {
+            writer: true
+        }
+    })
 
-    const writerRepository = AppDataSource.getRepository(Writer)
-    const writer = await writerRepository.findOneBy({ id: writerId })
-
-    if (!writer) {
-        throw new AppError(404, "Writer not found.")
-    }
-
-    // const categoryRepository = AppDataSource.getRepository(Categories)
-    // const category = await categoryRepository.findOneBy({ id: categoryId })
-
-    if (!category) {
-        throw new AppError(404, "Category not found.")
+    if (!user!.writer) {
+        throw new AppError(401, "User is not a writer")
     }
 
     const news = new News()
-    news.writer = writer
-    // news.category = category
+    news.writer = user!.writer
     news.title = title
     news.subtitle = subtitle
     news.urlImage = urlImage
     news.body = body
     news.createdAt = createdAt ? new Date(createdAt) : new Date()
     news.updatedAt = new Date()
+
+    const verifyCategory = await categoryRepository.findOneBy({
+        name: category
+    })
+    if (!verifyCategory) {
+        const categoryCreate = new Categories()
+
+        categoryCreate.name = category
+
+        await categoryRepository.save(categoryCreate)
+
+        news.category = categoryCreate
+    } else {
+        news.category = verifyCategory
+    }
 
     const newNews = await newsRepository.save(news)
 

@@ -8,7 +8,7 @@ const listNewsIdService = async (id: string) => {
     const newsExist = news.find((news) => news.id === id)
 
     if (!newsExist) {
-        throw new AppError(400, "News not found")
+        throw new AppError(404, "News not found")
     }
 
     return newsExist
