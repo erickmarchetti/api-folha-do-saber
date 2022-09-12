@@ -17,7 +17,6 @@ let adminLoginResponse: ResponseLogin
 let userWriterLoginResp: ResponseLogin
 let writer: IWriter
 let userLoginResponse: ResponseLogin
-// Alterei o nome para não dar confusão
 let globalNews: INews
 
 describe("Tests News routes", () => {
@@ -65,27 +64,17 @@ describe("Tests News routes", () => {
         await connection.destroy()
     })
 
-    // Adm não deve poder criar notícias sem ser um redator - não considerado na contagem
-    test("POST /news  -  Admin must be able to create a new", async () => {
-        // mockedNews.writerId = writer.id
+    test("POST /news  -  Admin must not be able to create a new", async () => {
         const response = await request(app)
             .post("/news")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send(mockedNews)
 
-        expect(response.body).toHaveProperty("writer")
-        expect(response.body).toHaveProperty("category")
-        expect(response.body).toHaveProperty("title")
-        expect(response.body).toHaveProperty("subtitle")
-        expect(response.body).toHaveProperty("body")
-        expect(response.body).toHaveProperty("urlImage")
-        expect(response.body).toHaveProperty("createdAt")
-        expect(response.body).toHaveProperty("updatedAt")
-        expect(response.status).toBe(201)
+        expect(response.body).toHaveProperty("messagem")
+        expect(response.status).toBe(401)
     })
 
     test("POST /news  -  Writer must be able to create a new", async () => {
-        // mockedNews.writerId = writer.id
         const response = await request(app)
             .post("/news")
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
@@ -137,6 +126,7 @@ describe("Tests News routes", () => {
         expect(response.body[0]).toHaveProperty("urlImage")
         expect(response.body[0]).toHaveProperty("createdAt")
         expect(response.body[0]).toHaveProperty("updatedAt")
+
         expect(response.status).toBe(200)
     })
 
@@ -153,6 +143,7 @@ describe("Tests News routes", () => {
         expect(response.body).toHaveProperty("urlImage")
         expect(response.body).toHaveProperty("createdAt")
         expect(response.body).toHaveProperty("updatedAt")
+
         expect(response.status).toBe(200)
     })
 
@@ -183,6 +174,7 @@ describe("Tests News routes", () => {
         expect(response.body[0]).toHaveProperty("urlImage")
         expect(response.body[0]).toHaveProperty("createdAt")
         expect(response.body[0]).toHaveProperty("updatedAt")
+
         expect(response.status).toBe(200)
     })
 
@@ -213,6 +205,7 @@ describe("Tests News routes", () => {
         expect(response.body[0]).toHaveProperty("urlImage")
         expect(response.body[0]).toHaveProperty("createdAt")
         expect(response.body[0]).toHaveProperty("updatedAt")
+
         expect(response.status).toBe(200)
     })
 
@@ -241,6 +234,7 @@ describe("Tests News routes", () => {
         expect(response.body).toHaveProperty("createdAt")
         expect(response.body).toHaveProperty("updatedAt")
         expect(response.body.title).toEqual("Lagarta come folhas - Admin")
+
         expect(response.status).toBe(200)
     })
 
