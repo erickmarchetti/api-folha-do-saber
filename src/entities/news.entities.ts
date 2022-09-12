@@ -17,10 +17,7 @@ export class News {
     @PrimaryColumn("uuid")
     readonly id: string
 
-    @ManyToOne((type) => Writer, (writer) => writer.news, {
-        eager: true,
-        onDelete: "CASCADE"
-    })
+    @ManyToOne((type) => Writer, (writer) => writer.news, { eager: true })
     @JoinColumn({ name: "writerId" })
     writer: Writer
 

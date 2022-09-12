@@ -17,8 +17,7 @@ export class Writer {
 
     @OneToOne((type) => Users, (user) => user.writer, {
         eager: true,
-        nullable: false,
-        onDelete: "CASCADE"
+        nullable: false
     })
     @JoinColumn({ name: "userId" })
     user: Users
