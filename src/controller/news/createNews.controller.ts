@@ -3,9 +3,10 @@ import { instanceToPlain } from "class-transformer"
 import createNewsService from "../../service/news/createNews.service"
 
 const createNewsController = async (req: Request, res: Response) => {
-    const { title, subtitle, urlImage, category, body, createdAt, writerId } =
-        req.body
-    const newNews = await createNewsService(writerId, {
+    const { title, subtitle, urlImage, category, body, createdAt } = req.body
+    const userId = req.user.userId
+
+    const newNews = await createNewsService(userId, {
         title,
         subtitle,
         urlImage,

@@ -8,6 +8,7 @@ const appRoutes = (app: Express) => {
     app.use("/users", userRouter)
     app.use("/news", newsRouter)
     app.use("/writers", writerRouter)
+    app.use("/news", newsRouter)
     app.use("/login", loginRouter)
 }
 
