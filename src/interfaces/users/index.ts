@@ -5,6 +5,7 @@ export interface IUserRequest {
 }
 
 export interface IUserPatchRequest {
+    id: string
     name?: string
     email?: string
     password?: string

@@ -7,7 +7,7 @@ const authTokenWriterOrAdmMiddleware = async (
 ) => {
     if (!req.user.isWriter && !req.user.isAdm) {
         return res
-            .status(403)
+            .status(401)
             .json({ message: "User is not a writer neither an administrator" })
     }
     next()
