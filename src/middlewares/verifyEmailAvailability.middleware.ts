@@ -16,7 +16,7 @@ const verifyEmailAvailabilityMiddleware = async (
     const emailAlreadyExists = users.find((user) => user.email === email)
 
     if (emailAlreadyExists) {
-        throw new AppError(400, "E-mail already registered")
+        throw new AppError(400, "User already exists")
     }
 
     next()
