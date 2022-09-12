@@ -9,7 +9,7 @@ const userDeleteService = async (id: string) => {
         throw new AppError(404, "User not found.")
     }
     if (userDeleted.isAdm !== true && userDeleted.id !== id) {
-        throw new AppError(401, "Invalid token.")
+        throw new AppError(403, "Invalid token.")
     }
     await userRepository.delete(userDeleted)
 

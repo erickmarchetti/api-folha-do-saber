@@ -6,7 +6,7 @@ const authTokenAdmMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isAdm) {
-        return res.status(403).json({ message: "User is not administrator " })
+        return res.status(401).json({ message: "User is not administrator " })
     }
     next()
 }
