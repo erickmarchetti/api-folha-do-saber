@@ -78,7 +78,10 @@ describe("Tests Users routes", () => {
             password: "1234"
         })
         mockedWriter.userId = newUser.body.id
-        await request(app).post("/writer").send(mockedWriter)
+        await request(app)
+            .post("/writers")
+            .set("Authorization", `Bearer ${loginAdm.body.token}`)
+            .send(mockedWriter)
         loginWriter = await request(app)
             .post("/login")
             .send({ email: "newUser@gmail.com", password: "1234" })
@@ -158,7 +161,7 @@ describe("Tests Users routes", () => {
         })
 
         await request(app)
-            .post("/writer")
+            .post("/writers")
             .set("Authorization", `Bearer ${loginAdm.body.token}`)
             .send({
                 bio: "uma bio",
