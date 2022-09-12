@@ -1128,7 +1128,7 @@ Exemplon de Resposta:
 
 possiveis problemas
 
--User comum tentando excluir a noticia
+-Usuario comum tentando excluir a noticia
 
 **status 401 Unauthorized**
 
