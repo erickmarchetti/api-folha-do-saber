@@ -1,19 +1,17 @@
 import { Request, Response } from "express"
+import { IUserPatchRequest } from "../../interfaces/users"
 import updateUserService from "../../service/users/updateUser.service"
 
 const updateUserController = async (req: Request, res: Response) => {
-    const { name, email, password, isAdm, isWriter } = req.body
+    const { name, email, password, isAdm, isWriter }: IUserPatchRequest =
+        req.body
     const { id } = req.params
 
     const updateUser = await updateUserService(
-        id,
-        name,
-        email,
-        password,
-        isAdm,
-        isWriter
+        { id, name, email, password, isAdm, isWriter },
+        req.user
     )
 
-    return res.status(200).json({ message: "User updated" })
+    return res.status(200).json(updateUser)
 }
 export default updateUserController
