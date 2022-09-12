@@ -3,11 +3,11 @@ import { Categories } from "../../entities/categories.entities"
 import { News } from "../../entities/news.entities"
 import { Writer } from "../../entities/writer.entities"
 import { AppError } from "../../errors/appError"
-import { INewsCreate } from "../../interfaces/news"
+import { INewsRequest } from "../../interfaces/news"
 
 const createNewsService = async (
     writerId: string,
-    { title, subtitle, urlImage, categoryId, body, createdAt }: INewsCreate
+    { title, subtitle, urlImage, category, body, createdAt }: INewsRequest
 ) => {
     const newsRepository = AppDataSource.getRepository(News)
     const newsAlreadyExists = await newsRepository.findOneBy({ title })
@@ -23,8 +23,8 @@ const createNewsService = async (
         throw new AppError(404, "Writer not found.")
     }
 
-    const categoryRepository = AppDataSource.getRepository(Categories)
-    const category = await categoryRepository.findOneBy({ id: categoryId })
+    // const categoryRepository = AppDataSource.getRepository(Categories)
+    // const category = await categoryRepository.findOneBy({ id: categoryId })
 
     if (!category) {
         throw new AppError(404, "Category not found.")
@@ -32,7 +32,7 @@ const createNewsService = async (
 
     const news = new News()
     news.writer = writer
-    news.category = category
+    // news.category = category
     news.title = title
     news.subtitle = subtitle
     news.urlImage = urlImage
