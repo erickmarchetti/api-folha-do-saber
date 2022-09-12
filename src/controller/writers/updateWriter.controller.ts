@@ -5,9 +5,9 @@ const updateWriterController = async (req: Request, res: Response) => {
     const { id } = req.params
     const { bio, profileImage } = req.body
 
-    await updateWriterService(id, bio, profileImage)
+    const updatedWriter = await updateWriterService(id, bio, profileImage)
 
-    return res.status(200).json({ message: "Writer updated" })
+    return res.status(200).json(updatedWriter)
 }
 
 export default updateWriterController

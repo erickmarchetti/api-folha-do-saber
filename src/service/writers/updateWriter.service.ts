@@ -20,7 +20,9 @@ const updateWriterService = async (
         profileImage
     })
 
-    return true
+    const updatedWriter = await writerRepository.findOneBy({ id: id })
+
+    return updatedWriter
 }
 
 export default updateWriterService

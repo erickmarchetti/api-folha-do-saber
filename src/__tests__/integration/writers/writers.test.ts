@@ -133,7 +133,12 @@ describe("Tests Writers Routes", () => {
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send({ bio: "Amo escrever testes - Admin" })
 
-        expect(response.body).toHaveProperty("message")
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("profileImage")
+        expect(response.body).toHaveProperty("bio")
+        expect(response.body).toHaveProperty("user")
+        expect(response.body.bio).toEqual("Amo escrever testes - Admin")
+        expect(response.body.user.isWriter).toBe(true)
         expect(response.status).toBe(200)
     })
 
@@ -144,7 +149,12 @@ describe("Tests Writers Routes", () => {
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
             .send({ bio: "Amo escrever testes - Escritor" })
 
-        expect(response.body).toHaveProperty("message")
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("profileImage")
+        expect(response.body).toHaveProperty("bio")
+        expect(response.body).toHaveProperty("user")
+        expect(response.body.bio).toEqual("Amo escrever testes - Escritor")
+        expect(response.body.user.isWriter).toBe(true)
         expect(response.status).toBe(200)
     })
 
