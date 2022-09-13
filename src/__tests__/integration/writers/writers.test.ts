@@ -33,7 +33,7 @@ describe("Tests Writers Routes", () => {
         await request(app).post("/users").send({
             email: "tonho@gmail.com",
             name: "Tonho",
-            password: "1234"
+            password: "1234Aa!"
         })
         adminLoginResponse = await request(app)
             .post("/login")
@@ -43,7 +43,7 @@ describe("Tests Writers Routes", () => {
             .send(mockedUserLogin)
         userLoginResponse = await request(app).post("/login").send({
             email: "tonho@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
     })
 
@@ -83,6 +83,7 @@ describe("Tests Writers Routes", () => {
         const response = await request(app)
             .post("/writers")
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
+            .send(mockedWriter)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
