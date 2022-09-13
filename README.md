@@ -246,12 +246,12 @@ Possíveis Problemas:
 
 -Se o usuário passar um token invalido
 
-**status 401 unauthorized**
+**Status 401 Unauthorized**
 
 ```json
     "status": "Error",
     "code": 401,
-    "message": "USER IS NOT A WRITER NEITHER AN ADMNISTRATOR"
+    "message": "User is not a writer neither an admnistrator"
 ```
 
 #### Atualizar Usuário<br/>
@@ -360,13 +360,13 @@ Possiveis Problemas:
 
 -Se o usuario passar um id invalido
 
-**Status 500 Internal Server Error**
+**Status 404 Not Found**
 
 ```json
 {
     "status": "Error",
-    "code": 500,
-    "message": "Internal Server Error"
+    "code": 404,
+    "message": "News not found"
 }
 ```
 
@@ -472,13 +472,13 @@ Possiveis Problemas:
 
 -Se o administrador passar um userId invalido
 
-**Status 500 internal server error**
+**Status 404 Not Found**
 
 ```json
 {
     "status": "Error",
-    "code": 500,
-    "message": "Internal Server Error"
+    "code": 404,
+    "message": "User not found"
 }
 ```
 
@@ -587,7 +587,7 @@ OBS:Apenas o administrador e o joprnalista podem fazer a modificacao
 
 Exemplo de resposta:
 
-**Status 200 Created**
+**Status 200 OK**
 
 ```json
 {
@@ -731,21 +731,45 @@ Exemplo de resposta:
 
 Possiveis Problemas
 
--Caso nao seja passado title, subtitle e body no corpo da requisição
+-Caso nao seja passado title no corpo da requisição
 
-**status 500 "Internal Server Error"**
+**Status 400 Bad Request**
 
 ```json
 {
     "status": "error",
-    "code": 500,
-    "message": "Internal server error"
+    "code": 400,
+    "message": "Title is required"
+}
+```
+
+-Caso nao seja passado subtitle no corpo da requisição
+
+**Status 400 Bad Request**
+
+```json
+{
+    "status": "error",
+    "code": 400,
+    "message": "Subtitle is required"
+}
+```
+
+-Caso nao seja passado body no corpo da requisição
+
+**Status 400 Bad Request**
+
+```json
+{
+    "status": "error",
+    "code": 400,
+    "message": "Body is required"
 }
 ```
 
 -Caso o usuario nao seja um jornalista
 
-**sataus 401**
+**Status 401 Unauthorized**
 
 ```json
 {
@@ -879,19 +903,19 @@ Possiveis problemas:
 
 -Se o id do jornalista for invalido
 
-**Status 500 internal server error**
+**Status 404 Not Found**
 
 ```json
 {
     "status": "Error",
-    "code": 500,
-    "message": "internal server error"
+    "code": 404,
+    "message": "Writer not found"
 }
 ```
 
 -Se nao for passado um id
 
-**status 404 not found**
+**Status 404 not found**
 
 ```json
 {
@@ -1079,7 +1103,7 @@ possiveis erros :
 
 -Se o escritor, ou usuario qualquer tentar alterar uma noticia que nao é dele
 
-**status 401 Unauthorized**
+**Status 401 Unauthorized**
 
 ```json
 {
@@ -1090,18 +1114,18 @@ possiveis erros :
 ```
 
 -Passando um id errado
-**status 500 Internal Server Error**
+**Status 404 Not Found**
 
 ```json
 {
     "status": "error",
-    "code": 500,
-    "message": "Internal server error "
+    "code": 404,
+    "message": "Not Found"
 }
 ```
 
 -Sem um token de writer
-**status 401 Unauthorized**
+**Status 401 Unauthorized**
 
 ```json
 {
@@ -1124,13 +1148,13 @@ possiveis erros :
 Essa rota permite que apenas o jornalista e o administrador possam excluir a noticia publicada
 Exemplon de Resposta:
 
-**status 204 no content**
+**Status 204 no content**
 
 possiveis problemas
 
 -Usuario comum tentando excluir a noticia
 
-**status 401 Unauthorized**
+**Status 401 Unauthorized**
 
 ```json
 {
@@ -1141,12 +1165,12 @@ possiveis problemas
 ```
 
 -Id invalido
-**status 500 internal server error**
+**Status 404 Not Found**
 
 ```json
 {
     "status": "error",
-    "code": 500,
-    "message": "internal server error"
+    "code": 404,
+    "message": "News not found"
 }
 ```
