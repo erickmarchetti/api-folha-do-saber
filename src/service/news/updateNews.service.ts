@@ -23,7 +23,8 @@ const updateNewsService = async (
         title,
         subtitle,
         urlImage,
-        body
+        body,
+        updatedAt: new Date()
     })
 
     const updatedNews = await newsRepository.findOneBy({ id: id })
