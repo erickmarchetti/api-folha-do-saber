@@ -731,15 +731,39 @@ Exemplo de resposta:
 
 Possiveis Problemas
 
--Caso nao seja passado title, subtitle e body no corpo da requisição
+-Caso nao seja passado title no corpo da requisição
 
-**Status 500 "Internal Server Error"**
+**Status 400 Bad Request**
 
 ```json
 {
     "status": "error",
-    "code": 500,
-    "message": "Internal server error"
+    "code": 400,
+    "message": "Title is required"
+}
+```
+
+-Caso nao seja passado subtitle no corpo da requisição
+
+**Status 400 Bad Request**
+
+```json
+{
+    "status": "error",
+    "code": 400,
+    "message": "Subtitle is required"
+}
+```
+
+-Caso nao seja passado body no corpo da requisição
+
+**Status 400 Bad Request**
+
+```json
+{
+    "status": "error",
+    "code": 400,
+    "message": "Body is required"
 }
 ```
 
