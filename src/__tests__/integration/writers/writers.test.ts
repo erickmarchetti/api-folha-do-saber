@@ -51,10 +51,10 @@ describe("Tests Writers Routes", () => {
         await connection.destroy()
     })
 
-    test("POST /writer - Admin must be able to create a Writer", async () => {
+    test("POST /writers - Admin must be able to create a Writer", async () => {
         mockedWriter.userId = userWriterLoginResp.body.id
         const response = await request(app)
-            .post("/writer")
+            .post("/writers")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send(mockedWriter)
 
@@ -68,10 +68,10 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(201)
     })
 
-    test("POST /writer - Must not be able to create a writer that already exists", async () => {
+    test("POST /writers - Must not be able to create a writer that already exists", async () => {
         mockedWriter.userId = userWriterLoginResp.body.id
         const response = await request(app)
-            .post("/writer")
+            .post("/writers")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send(mockedWriter)
 
@@ -79,18 +79,18 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(400)
     })
 
-    test("POST /writer - Must not be able to create writer without valid token", async () => {
+    test("POST /writers - Must not be able to create writer without valid token", async () => {
         const response = await request(app)
-            .post("/writer")
+            .post("/writers")
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
     })
 
-    test("POST /writer - must not create with an invalid userid", async () => {
+    test("POST /writers - must not create with an invalid userid", async () => {
         const response = await request(app)
-            .post("/writer")
+            .post("/writers")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send({
                 ...mockedWriter,
@@ -101,56 +101,64 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(404)
     })
 
-    test("GET /writer - Admin must be able list all writers", async () => {
+    test("GET /writers - Admin must be able list all writers", async () => {
         const response = await request(app)
-            .get("/writer")
+            .get("/writers")
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
 
         expect(response.body).toHaveProperty("map")
         expect(response.status).toBe(200)
     })
 
-    test("GET /writer - Must be not able list all writers if not admin", async () => {
+    test("GET /writers - Must be not able list all writers if not admin", async () => {
         const response = await request(app)
-            .get("/writer")
+            .get("/writers")
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
     })
 
-    test("GET /writer - without token", async () => {
-        const response = await request(app).get("/writer")
+    test("GET /writers - without token", async () => {
+        const response = await request(app).get("/writers")
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
     })
 
-    // Poderia retornar todos os dados e conferir se a alteração deu certo
-    test("PATCH /writer/:id - Admin must be able to change writer data", async () => {
+    test("PATCH /writers/:id - Admin must be able to change writer data", async () => {
         const response = await request(app)
-            .patch(`/writer/${mockedWriterResponse.id}`)
+            .patch(`/writers/${mockedWriterResponse.id}`)
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send({ bio: "Amo escrever testes - Admin" })
 
-        expect(response.body).toHaveProperty("message")
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("profileImage")
+        expect(response.body).toHaveProperty("bio")
+        expect(response.body).toHaveProperty("user")
+        expect(response.body.bio).toEqual("Amo escrever testes - Admin")
+        expect(response.body.user.isWriter).toBe(true)
         expect(response.status).toBe(200)
     })
 
-    // Poderia retornar todos os dados e conferir se a alteração deu certo
-    test("PATCH /writer/:id - Writer himself must be able to change data", async () => {
+    test("PATCH /writers/:id - Writer himself must be able to change data", async () => {
         const response = await request(app)
-            .patch(`/writer/${mockedWriterResponse.id}`)
+            .patch(`/writers/${mockedWriterResponse.id}`)
             .set("Authorization", `Bearer ${userWriterLoginResp.body.token}`)
             .send({ bio: "Amo escrever testes - Escritor" })
 
-        expect(response.body).toHaveProperty("message")
+        expect(response.body).toHaveProperty("id")
+        expect(response.body).toHaveProperty("profileImage")
+        expect(response.body).toHaveProperty("bio")
+        expect(response.body).toHaveProperty("user")
+        expect(response.body.bio).toEqual("Amo escrever testes - Escritor")
+        expect(response.body.user.isWriter).toBe(true)
         expect(response.status).toBe(200)
     })
 
-    test("PATCH /writer/:id - Must not be able to change writer data without a valid token", async () => {
+    test("PATCH /writers/:id - Must not be able to change writer data without a valid token", async () => {
         const response = await request(app)
-            .patch(`/writer/${mockedWriterResponse.id}`)
+            .patch(`/writers/${mockedWriterResponse.id}`)
             .set("Authorization", `Bearer ${userLoginResponse.body.token}`)
             .send({ bio: "Amo escrever testes - Usuário" })
 
@@ -158,18 +166,18 @@ describe("Tests Writers Routes", () => {
         expect(response.status).toBe(401)
     })
 
-    test("PATCH /writer/:id - Must not be able to change writer data without a token", async () => {
+    test("PATCH /writers/:id - Must not be able to change writer data without a token", async () => {
         const response = await request(app)
-            .patch(`/writer/${mockedWriterResponse.id}`)
+            .patch(`/writers/${mockedWriterResponse.id}`)
             .send({ bio: "Amo escrever testes - Usuário" })
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(401)
     })
 
-    test("PATCH /writer/:id - Must not be able to change writer data without a valid id", async () => {
+    test("PATCH /writers:id - Must not be able to change writer data without a valid id", async () => {
         const response = await request(app)
-            .patch(`/writer/25698547-5cds-423b-8a8d-5c23b35846kp`)
+            .patch(`/writers/25698547-5cds-423b-8a8d-5c23b35846kp`)
             .set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
             .send({ bio: "Amo escrever testes - id invalido" })
 

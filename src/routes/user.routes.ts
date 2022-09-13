@@ -7,6 +7,9 @@ import verifyEmailAvailabilityMiddleware from "../middlewares/verifyEmailAvailab
 import updateUserController from "../controller/users/updateUser.controller"
 import authTokenMiddleware from "../middlewares/authToken.middleware"
 import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
+import userReallyExistsMiddleware from "../middlewares/userReallyExists.middleware"
+import userIsHimselfMiddleware from "../middlewares/userIsHimself.middleware"
+import authTokenWriterOrAdmMiddleware from "../middlewares/authTokenIsWriterOrAdm.middleware"
 
 const userRouter = Router()
 
@@ -17,23 +20,29 @@ userRouter.post(
     createUserController
 )
 
-userRouter.get("", listUserIdController)
+userRouter.get(
+    "",
+    authTokenMiddleware,
+    authTokenWriterOrAdmMiddleware,
+    listUserIdController
+)
 
 userRouter.delete("", userDeleteController)
 
 userRouter.patch(
     "/:id",
     authTokenMiddleware,
-    authTokenAdmMiddleware,
+    userReallyExistsMiddleware,
+    userIsHimselfMiddleware,
+    verifyEmailAvailabilityMiddleware,
     updateUserController
 )
 
 userRouter.delete(
     "/:id",
     authTokenMiddleware,
-    authTokenAdmMiddleware,
+    userIsHimselfMiddleware,
     userDeleteController
-
 )
 
 export default userRouter

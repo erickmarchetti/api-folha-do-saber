@@ -9,7 +9,9 @@ const deleteNewsIdService = async (id: string) => {
     if (!news) {
         throw new AppError(404, "New not found")
     }
+
     await newsRepository.delete(news!.id)
+
     return "Notice deleted"
 }
 export default deleteNewsIdService
