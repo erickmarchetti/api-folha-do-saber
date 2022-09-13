@@ -1174,3 +1174,5 @@ possiveis problemas
     "message": "News not found"
 }
 ```
+
+Equipe Api Folha do Saber
