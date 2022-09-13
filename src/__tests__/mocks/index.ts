@@ -6,23 +6,19 @@ export const mockedUser: IUserRequest = {
     name: "Erick",
     password: "1234"
 }
-
 export const mockedUserLogin: IUserLogin = {
     email: "erick@gmail.com",
     password: "1234"
 }
-
 export const mockedAdm: IUserRequest = {
     email: "adm@gmail.com",
     name: "adm",
     password: "senha"
 }
-
 export const mockedAdmLogin: IUserLogin = {
     email: "adm@gmail.com",
     password: "senha"
 }
-
 export const mockedWriter: IWriterCreate = {
     bio: "amo escrever testes",
     profileImage: "image url",

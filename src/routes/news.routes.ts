@@ -12,15 +12,18 @@ import newsBelongsToTheUserMiddleware from "../middlewares/newsBelongsToTheUser.
 import deleteNewsIdController from "../controller/news/deleteNewsId.controller"
 import writerIsHimselfMiddleware from "../middlewares/writerIsHimself.middleware"
 import updateNewsController from "../controller/news/updateNews.controller"
+import verifyIsRedatorMiddleware from "../middlewares/verifyIsRedator.middleware"
+import newsReallyExistsMiddleware from "../middlewares/newsReallyExists.middleware"
 
 const newsRouter = Router()
-newsRouter.get("/:id/categories", listNewsByCategoryController)
+newsRouter.get("/:categoryName/categories", listNewsByCategoryController)
 newsRouter.get("", listAllNewsController)
 newsRouter.get("/:id", listNewsIdController)
-newsRouter.get("/:id/writers", listNewsByWriterController)
+newsRouter.get("/:writerId/writers", listNewsByWriterController)
 newsRouter.delete(
     "/:id",
-    authTokenAdmMiddleware,
+    authTokenMiddleware,
+    newsReallyExistsMiddleware,
     newsBelongsToTheUserMiddleware,
     deleteNewsIdController
 )
@@ -28,14 +31,16 @@ newsRouter.delete(
 newsRouter.post(
     "",
     authTokenMiddleware,
-    authTokenWriterOrAdmMiddleware,
+    verifyIsRedatorMiddleware,
     createNewsController
 )
 
 newsRouter.patch(
     "/:id",
-    authTokenWriterOrAdmMiddleware,
-    writerIsHimselfMiddleware,
+    authTokenMiddleware,
+    verifyIsRedatorMiddleware,
+    newsReallyExistsMiddleware,
+    newsBelongsToTheUserMiddleware,
     updateNewsController
 )
 
