@@ -7,13 +7,13 @@ const yupValidateMiddleware =
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const data = req.body
-            await schema.validate(data)
+            await schema.validate(data, { abortEarly: false })
 
             next()
-        } catch (err) {
-            if (err instanceof Error) {
-                throw new AppError(400, err.message)
-            }
+        } catch (err: any) {
+            console.log(err.errors)
+
+            throw new AppError(400, err.errors.join("; "))
         }
     }
 
