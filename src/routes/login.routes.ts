@@ -1,6 +1,6 @@
 import { Router } from "express"
 
-import userLoginController from "../controller/login/userLogin.controller"
+import userLoginController from "../controllers/login/userLogin.controller"
 import yupValidateMiddleware from "../middlewares/yupValidate.middleware"
 import { postLoginSchema } from "../schemas/postLogin.schema"
 

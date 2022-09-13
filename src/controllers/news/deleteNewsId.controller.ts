@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import deleteNewsIdService from "../../service/news/deleteNewsId.service"
+import deleteNewsIdService from "../../services/news/deleteNewsId.service"
 
 const deleteNewsIdController = async (request: Request, response: Response) => {
     const id = request.params.id

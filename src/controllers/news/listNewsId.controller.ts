@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import listNewsIdService from "../../service/news/listNewsId.service"
+import listNewsIdService from "../../services/news/listNewsId.service"
 
 const listNewsIdController = async (req: Request, res: Response) => {
     const id = req.params.id

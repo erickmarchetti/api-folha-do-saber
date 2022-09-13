@@ -1,7 +1,7 @@
 import { instanceToPlain } from "class-transformer"
 import { Request, Response } from "express"
 import { IUserPatchRequest } from "../../interfaces/users"
-import updateUserService from "../../service/users/updateUser.service"
+import updateUserService from "../../services/users/updateUser.service"
 
 const updateUserController = async (req: Request, res: Response) => {
     const { name, email, password, isAdm, isWriter }: IUserPatchRequest =

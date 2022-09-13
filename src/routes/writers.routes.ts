@@ -1,10 +1,10 @@
 import { Router } from "express"
 
-import listWritersController from "../controller/writers/listWriters.controller"
-import createWriterController from "../controller/writers/createWriter.controller"
+import listWritersController from "../controllers/writers/listWriters.controller"
+import createWriterController from "../controllers/writers/createWriter.controller"
 import authTokenMiddleware from "../middlewares/authToken.middleware"
 import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
-import updateWriterController from "../controller/writers/updateWriter.controller"
+import updateWriterController from "../controllers/writers/updateWriter.controller"
 import writerIsHimselfMiddleware from "../middlewares/writerIsHimself.middleware"
 import yupValidateMiddleware from "../middlewares/yupValidate.middleware"
 import { createWriterSchema } from "../schemas/createWriter.schema"
