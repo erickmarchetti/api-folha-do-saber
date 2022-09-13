@@ -11,8 +11,6 @@ const yupValidateMiddleware =
 
             next()
         } catch (err: any) {
-            console.log(err.errors)
-
             throw new AppError(400, err.errors.join("; "))
         }
     }
