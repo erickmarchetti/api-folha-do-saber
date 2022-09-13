@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { instanceToPlain } from "class-transformer"
-import listNewsByCategoryService from "../../service/news/listNewsByCategory.service"
+import listNewsByCategoryService from "../../services/news/listNewsByCategory.service"
 
 const listNewsByCategoryController = async (req: Request, res: Response) => {
     const { categoryName } = req.params

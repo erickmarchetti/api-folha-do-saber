@@ -24,12 +24,6 @@ export interface IUser {
     updatedAt: Date
 }
 
-export interface IWriterRequest {
-    userId: string
-    bio: string
-    profileImage?: string
-}
-
 export interface IWriter {
     id: string
     userData: IUser
@@ -37,7 +31,7 @@ export interface IWriter {
     profileImage: string
 }
 
-export interface IWriterCreate {
+export interface IWriterRequest {
     userId: string
     bio: string
     profileImage: string

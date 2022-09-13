@@ -34,7 +34,7 @@ describe("", () => {
     test("POST /login - must not log in if the email or password is wrong", async () => {
         const response = await request(app).post("/login").send({
             email: "erick@mail.com",
-            password: "4321"
+            password: "1234567Aa!!"
         })
 
         expect(response.body).toHaveProperty("message")

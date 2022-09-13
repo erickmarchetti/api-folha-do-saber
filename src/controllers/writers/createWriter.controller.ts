@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { instanceToPlain } from "class-transformer"
-import createWriterService from "../../service/writers/createWriter.service"
+import createWriterService from "../../services/writers/createWriter.service"
 
 const createWriterController = async (req: Request, res: Response) => {
     const { userId, bio, profileImage } = req.body

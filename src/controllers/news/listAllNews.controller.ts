@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { instanceToPlain } from "class-transformer"
-import listAllNewsService from "../../service/news/listAllNews.service"
+import listAllNewsService from "../../services/news/listAllNews.service"
 
 const listAllNewsController = async (req: Request, res: Response) => {
     const listAllNews = await listAllNewsService()
