@@ -51,7 +51,8 @@ const updateUserService = async (
         isWriter:
             patchRequest.isWriter !== undefined
                 ? patchRequest.isWriter
-                : user!.isWriter
+                : user!.isWriter,
+        updatedAt: new Date()
     })
 
     const updatedUser = await userRepository.findOneBy({ id: patchRequest.id })
