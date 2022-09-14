@@ -1,16 +1,32 @@
 # Api Folha do Saber
 
-> Base url : https://folha-do-saber.herokuapp.com/
+## Base URL:
 
-## Endpoints
+    https://api-folha-do-saber.herokuapp.com/
 
-### USUÁRIO:
+---
 
-#### Cadastrar Usuário <br/>
+# Índice
 
-1. Fazer cadastro de novo usuário
+-   ## Usuário
 
-    `POST/users` <br/>
+    ### [Cadastro](#cadastrar-usuário)
+
+    ### [Login](#logar-usuário)
+
+    ### [Listagem](#listar-usuário)
+
+    ### [Atualização](#atualizar-usuário)
+
+---
+
+# Endpoints
+
+## USUÁRIO:
+
+### Cadastrar usuário:
+
+`POST/users`
 
 ```json
 {
@@ -21,77 +37,79 @@
 ```
 
 Essa rota deverá criar um usuário retornando todos os dados passados no corpo da requisição, exceto o hash de senha. Chave isAdm e isWriter são false por padrão.
-OBS:O primeiro usuário cadastrado do banco de dados será um "isAdm: true", os demais serão "isAdm: false" por padrão.
+OBS: O primeiro usuário cadastrado do banco de dados será um "isAdm: true", os demais serão "isAdm: false" por padrão.
 
-Exemplo de resposta:
+-   Exemplo de resposta:
 
-**Status 201 Created**
+    <span style="color:green;">**Status 201 Created**</span>
 
-```json
-   {
-       "isAdm": false
-       "isWriter": false,
-       "createdAt": 07/09/2022,
-       "updatedAt": 07/09/2022,
-       "id": "723b83f4-ccbc-4ad3-9074-c5ef6726ce30"
-       "name": "Lagartinha Raios Funde",
-       "email": "lagartinha@gmail.com",
-   }
-```
+    ```json
+    {
+        "isAdm": false
+        "isWriter": false,
+        "createdAt": 07/09/2022,
+        "updatedAt": 07/09/2022,
+        "id": "723b83f4-ccbc-4ad3-9074-c5ef6726ce30"
+        "name": "Lagartinha Raios Funde",
+        "email": "lagartinha@gmail.com",
+    }
+    ```
 
-Possíveis Problemas:
+*   Possíveis Problemas:
 
--Tentando criar um usuario que já existe
+    1. Tentando criar um usuario que já existe
 
-**Status 400 Bad Request**
+        <span style="color:orange;">**Status 400 Bad Request**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 400,
-    "message": "User already exists"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 400,
+            "message": "User already exists"
+        }
+        ```
 
--Tentando criar um usuario sem passar algum dado do corpo da requisicao
+    2. Tentando criar um usuario sem passar algum dado do corpo da requisicao
 
-**Status 400 Bad Request**
+        <span style="color:orange;">**Status 400 Bad Request**</span>
 
-Caso sem name:
+        - Requisição sem o campo "name":
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Name is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "'name' is required"
+        }
+        ```
 
-Caso sem email:
+        - Requisição sem o campo "email":
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Email is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "'email' is required"
+        }
+        ```
 
-Caso sem password:
+        - Requisição sem o campo "password":
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Password is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "'password' is required"
+        }
+        ```
 
-#### Logar Usuário <br/>
+    -   **Observação:**
 
-2- Fazendo login de usuários
+        -   No caso de múltiplos campos faltantes na requisição, será gerada uma mensagem de erro concatenando todos os campos faltantes.
 
-`POST /login`<br/>
+### Logar usuário
+
+`POST /login`
 
 ```json
 {
@@ -100,63 +118,67 @@ Caso sem password:
 }
 ```
 
-Essa rota deve fazer o login do usuário já cadastrado retornando seu id e token de acesso.
+Essa rota deve fazer o login do usuário já cadastrado, retornando seu id e seu token de acesso.
 
-Exemplo de resposta:
+-   Exemplo de resposta:
 
-**Status 200 OK**
+    <span style="color:green;">**Status 201 Created**</span>
 
-```json
-{
-    "id": "a43ab5ee-d7e7-4aec-98c7-612276091a06",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbSI6dHJ1ZSwiaXNXcml0ZXIiOmZhbHNlLCJ1c2VySWQiOiJhNDNhYjVlZS1kN2U3LTRhZWMtOThjNy02MTIyNzYwOTFhMDYiLCJpYXQiOjE2NjI5OTMzMTgsImV4cCI6MTY2MzA3OTcxOH0.qgWxle8gDSz8yv-eHv-4brFBs2SNbixGuz0SrnfCsmM"
-}
-```
+    ```json
+    {
+        "id": "a43ab5ee-d7e7-4aec-98c7-612276091a06",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbSI6dHJ1ZSwiaXNXcml0ZXIiOmZhbHNlLCJ1c2VySWQiOiJhNDNhYjVlZS1kN2U3LTRhZWMtOThjNy02MTIyNzYwOTFhMDYiLCJpYXQiOjE2NjI5OTMzMTgsImV4cCI6MTY2MzA3OTcxOH0.qgWxle8gDSz8yv-eHv-4brFBs2SNbixGuz0SrnfCsmM"
+    }
+    ```
 
-Possiveis Problemas:
+*   Possiveis Problemas:
 
--Se email ou senha estiverem incorretos
+    1. Se o email ou a senha estiverem incorretos:
 
-**Status 403 Forbidden**
+        <span style="color:orange;">**Status 403 Forbidden**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 403,
-    "message": "Invalid Credentials"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 403,
+            "message": "Invalid Credentials"
+        }
+        ```
 
--Se não for passado o campo de email
+    2. Tentando logar um usuário sem passar algum dado do corpo da requisição:
 
-**Status 400 Bad Request**
+        - Requisição sem o campo "email":
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Email is required"
-}
-```
+            <span style="color:orange;">**Status 400 Bad Request**</span>
 
--Se não for passado o campo de password
-**Status 400 Bad Request**
+            ```json
+            {
+                "status": "error",
+                "code": 400,
+                "message": "'email' is required"
+            }
+            ```
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Email is required"
-}
-```
+        - Requisição sem o campo "password":
+          <span style="color:orange;">**Status 400 Bad Request**</span>
 
-OBS: Por questões de segurança quando existir conflito na comparacao de email ou senha nunca especificar qual esta incorreto
+            ```json
+            {
+                "status": "error",
+                "code": 400,
+                "message": "'password' is required"
+            }
+            ```
 
-#### listar Usuário <br/>
+    -   **Observação:**
 
-3- Fazendo Listagem de Usuário
+        -   No caso de múltiplos campos faltantes na requisição, será gerada uma mensagem de erro concatenando todos os campos faltantes.
 
-`GET/users`<br/>
+        *   Por questões de segurança, quando existir conflito na comparação de email ou senha, nunca especificar qual está incorreto.
+
+### Listar usuário:
+
+`GET/users`
 
 ```json
 //no body
@@ -164,97 +186,103 @@ OBS: Por questões de segurança quando existir conflito na comparacao de email 
 
 Essa rota deve retornar todos os usuarios se voce tiver token de acesso(admin WRITER).
 
-Exemplo de Resposta:
+-   Exemplo de Resposta:
 
-**Status 200 OK**
+    <span style="color:green;">**Status 200 OK**</span>
 
-```json
-[
-    {
-        "createdAt": "2022-09-12T13:03:05.316Z",
-        "updatedAt": "2022-09-12T13:03:05.316Z",
-        "id": "a43ab5ee-d7e7-4aec-98c7-612276091a06",
-        "name": "Tiberio",
-        "email": "tiberio@bruno.com",
-        "isAdm": true,
-        "isWriter": false
-    },
-    {
-        "createdAt": "2022-09-12T13:03:20.171Z",
-        "updatedAt": "2022-09-12T13:03:20.171Z",
-        "id": "0e2c2c70-d72c-4f1a-afff-e64a26237142",
-        "name": "joao",
-        "email": "joao@bruno.com",
-        "isAdm": false,
-        "isWriter": false
-    },
-    {
-        "createdAt": "2022-09-12T13:03:25.657Z",
-        "updatedAt": "2022-09-12T13:03:25.657Z",
-        "id": "3fa4f7c1-1cea-4e3b-9544-6929c3081af1",
-        "name": "Pedro",
-        "email": "pedro@bruno.com",
-        "isAdm": false,
-        "isWriter": false
-    },
-    {
-        "createdAt": "2022-09-12T13:06:05.853Z",
-        "updatedAt": "2022-09-12T13:06:05.853Z",
-        "id": "794d3577-b19e-4fe5-9a36-4f5404a9591f",
-        "name": "Bruno Writer",
-        "email": "writer@bruno.com",
-        "isAdm": false,
-        "isWriter": true
-    },
-    {
-        "createdAt": "2022-09-12T14:35:56.227Z",
-        "updatedAt": "2022-09-12T14:35:56.227Z",
-        "id": "ae082774-99d9-426d-99a8-55149807a727",
-        "name": "Bruno aaa Update/Delete",
-        "email": "brunoupdate@bruno.com",
-        "isAdm": false,
-        "isWriter": false
-    }
-]
-```
+    ```json
+    [
+        {
+            "createdAt": "2022-09-12T13:03:05.316Z",
+            "updatedAt": "2022-09-12T13:03:05.316Z",
+            "id": "a43ab5ee-d7e7-4aec-98c7-612276091a06",
+            "name": "Tiberio",
+            "email": "tiberio@bruno.com",
+            "isAdm": true,
+            "isWriter": false
+        },
+        {
+            "createdAt": "2022-09-12T13:03:20.171Z",
+            "updatedAt": "2022-09-12T13:03:20.171Z",
+            "id": "0e2c2c70-d72c-4f1a-afff-e64a26237142",
+            "name": "joao",
+            "email": "joao@bruno.com",
+            "isAdm": false,
+            "isWriter": false
+        },
+        {
+            "createdAt": "2022-09-12T13:03:25.657Z",
+            "updatedAt": "2022-09-12T13:03:25.657Z",
+            "id": "3fa4f7c1-1cea-4e3b-9544-6929c3081af1",
+            "name": "Pedro",
+            "email": "pedro@bruno.com",
+            "isAdm": false,
+            "isWriter": false
+        },
+        {
+            "createdAt": "2022-09-12T13:06:05.853Z",
+            "updatedAt": "2022-09-12T13:06:05.853Z",
+            "id": "794d3577-b19e-4fe5-9a36-4f5404a9591f",
+            "name": "Bruno Writer",
+            "email": "writer@bruno.com",
+            "isAdm": false,
+            "isWriter": true
+        },
+        {
+            "createdAt": "2022-09-12T14:35:56.227Z",
+            "updatedAt": "2022-09-12T14:35:56.227Z",
+            "id": "ae082774-99d9-426d-99a8-55149807a727",
+            "name": "Bruno aaa Update/Delete",
+            "email": "brunoupdate@bruno.com",
+            "isAdm": false,
+            "isWriter": false
+        }
+    ]
+    ```
 
-Possíveis Problemas:
+*   Possíveis problemas:
 
--Se o usuário não tiver token de administrador
+    1. Se o usuário não tiver token com permissão de admin, nem de writer:
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Invalid token"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "User is not a writer neither an admnistrator"
+        }
+        ```
 
--   Se o usuário não tiver token de acesso
+    2. Se o usuário não tiver token de acesso:
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Missing token"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Missing token"
+        }
+        ```
 
--Se o usuário passar um token invalido
+    3. Se o usuário passar um token inválido:
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-    "status": "Error",
-    "code": 401,
-    "message": "User is not a writer neither an admnistrator"
-```
+        ```json
+            "status": "Error",
+            "code": 401,
+            "message": "Invalid token"
+        ```
 
-#### Atualizar Usuário<br/>
+### Atualizar usuário:
+
+---
+
+// CONTINUAR DAQUI!!!!!
+
+---
 
 3- Fazendo Atualização de Usuário
 
