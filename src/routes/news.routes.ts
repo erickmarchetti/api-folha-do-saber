@@ -1,19 +1,18 @@
 import { Router } from "express"
 
-import listNewsByCategoryController from "../controller/news/listNewsByCategory.controller"
-import createNewsController from "../controller/news/createNews.controller"
+import listNewsByCategoryController from "../controllers/news/listNewsByCategory.controller"
+import createNewsController from "../controllers/news/createNews.controller"
 import authTokenMiddleware from "../middlewares/authToken.middleware"
-import authTokenWriterOrAdmMiddleware from "../middlewares/authTokenIsWriterOrAdm.middleware"
-import listAllNewsController from "../controller/news/listAllNews.controller"
-import listNewsIdController from "../controller/news/listNewsId.controller"
-import listNewsByWriterController from "../controller/news/listNewsByWriter.controller"
-import authTokenAdmMiddleware from "../middlewares/authTokenIsAdm.middleware"
+import listAllNewsController from "../controllers/news/listAllNews.controller"
+import listNewsIdController from "../controllers/news/listNewsId.controller"
+import listNewsByWriterController from "../controllers/news/listNewsByWriter.controller"
 import newsBelongsToTheUserMiddleware from "../middlewares/newsBelongsToTheUser.middleware"
-import deleteNewsIdController from "../controller/news/deleteNewsId.controller"
-import writerIsHimselfMiddleware from "../middlewares/writerIsHimself.middleware"
-import updateNewsController from "../controller/news/updateNews.controller"
+import deleteNewsIdController from "../controllers/news/deleteNewsId.controller"
+import updateNewsController from "../controllers/news/updateNews.controller"
 import verifyIsRedatorMiddleware from "../middlewares/verifyIsRedator.middleware"
 import newsReallyExistsMiddleware from "../middlewares/newsReallyExists.middleware"
+import yupValidateMiddleware from "../middlewares/yupValidate.middleware"
+import { createNewsSchema } from "../schemas/createNews.schema"
 
 const newsRouter = Router()
 newsRouter.get("/:categoryName/categories", listNewsByCategoryController)
@@ -30,6 +29,7 @@ newsRouter.delete(
 
 newsRouter.post(
     "",
+    yupValidateMiddleware(createNewsSchema),
     authTokenMiddleware,
     verifyIsRedatorMiddleware,
     createNewsController

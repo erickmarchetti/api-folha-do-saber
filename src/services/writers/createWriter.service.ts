@@ -2,13 +2,13 @@ import AppDataSource from "../../data-source"
 import { Users } from "../../entities/users.entities"
 import { Writer } from "../../entities/writer.entities"
 import { AppError } from "../../errors/appError"
-import { IWriterCreate } from "../../interfaces/users"
+import { IWriterRequest } from "../../interfaces/users"
 
 const createWriterService = async ({
     userId,
     bio,
     profileImage
-}: IWriterCreate) => {
+}: IWriterRequest) => {
     const userRepository = AppDataSource.getRepository(Users)
     const user = await userRepository.findOneBy({ id: userId })
 

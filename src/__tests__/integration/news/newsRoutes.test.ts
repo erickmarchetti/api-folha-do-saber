@@ -39,7 +39,7 @@ describe("Tests News routes", () => {
         await request(app).post("/users").send({
             email: "tonho@gmail.com",
             name: "Tonho",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         adminLoginResponse = await request(app)
@@ -58,7 +58,7 @@ describe("Tests News routes", () => {
 
         userLoginResponse = await request(app).post("/login").send({
             email: "tonho@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
     })
 

@@ -75,7 +75,7 @@ describe("Tests Users routes", () => {
         const newUser = await request(app).post("/users").send({
             name: "newUser",
             email: "newUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
         mockedWriter.userId = newUser.body.id
         await request(app)
@@ -84,7 +84,7 @@ describe("Tests Users routes", () => {
             .send(mockedWriter)
         loginWriter = await request(app)
             .post("/login")
-            .send({ email: "newUser@gmail.com", password: "1234" })
+            .send({ email: "newUser@gmail.com", password: "1234Aa!" })
 
         const response = await request(app)
             .get("/users")
@@ -139,7 +139,7 @@ describe("Tests Users routes", () => {
         const targetUser = await request(app).post("/users").send({
             name: "targetUser",
             email: "targetUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const response = await request(app)
@@ -157,7 +157,7 @@ describe("Tests Users routes", () => {
         const futureWriter = await request(app).post("/users").send({
             name: "targetWriter",
             email: "targetWriter@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         await request(app)
@@ -215,7 +215,7 @@ describe("Tests Users routes", () => {
         const targetUser = await request(app).post("/users").send({
             name: "targetUser2",
             email: "targetUser2@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const response = await request(app)
@@ -231,7 +231,7 @@ describe("Tests Users routes", () => {
         const targetUser = await request(app).post("/users").send({
             name: "targetUser3",
             email: "targetUser3@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const response = await request(app)
@@ -257,12 +257,12 @@ describe("Tests Users routes", () => {
         await request(app).post("/users").send({
             name: "deleted user",
             email: "deletedUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const loginDeletedUser = await request(app).post("/login").send({
             email: "deletedUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const listUsers = await request(app)
@@ -286,12 +286,12 @@ describe("Tests Users routes", () => {
         await request(app).post("/users").send({
             name: "deleted user",
             email: "deletedUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const loginDeletedUser = await request(app).post("/login").send({
             email: "deletedUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const listUsers = await request(app)
@@ -315,7 +315,7 @@ describe("Tests Users routes", () => {
         const deletedUser = await request(app).post("/users").send({
             name: "deleted user",
             email: "deletedUser@gmail.com",
-            password: "1234"
+            password: "1234Aa!"
         })
 
         const response = await request(app)

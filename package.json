@@ -15,7 +15,8 @@
         "pg": "^8.8.0",
         "reflect-metadata": "^0.1.13",
         "typeorm": "^0.3.9",
-        "uuid": "^8.3.2"
+        "uuid": "^8.3.2",
+        "yup": "^0.32.11"
     },
     "scripts": {
         "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",

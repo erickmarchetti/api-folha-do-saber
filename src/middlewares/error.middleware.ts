@@ -14,7 +14,6 @@ export const errorMiddleware = (
             message: err.message
         })
     }
-    console.log(err + "err")
 
     return res.status(500).json({
         status: "error",

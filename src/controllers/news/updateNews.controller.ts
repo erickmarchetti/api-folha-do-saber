@@ -1,6 +1,6 @@
 import { instanceToPlain } from "class-transformer"
 import { Request, Response } from "express"
-import updateNewsService from "../../service/news/updateNews.service"
+import updateNewsService from "../../services/news/updateNews.service"
 
 const updateNewsController = async (req: Request, res: Response) => {
     const { id } = req.params

@@ -1,9 +1,15 @@
 import { Router } from "express"
-import userLoginController from "../controller/login/userLogin.controller"
-import verifyBodyLoginMiddleware from "../middlewares/verifyBodyLogin.middleware"
+
+import userLoginController from "../controllers/login/userLogin.controller"
+import yupValidateMiddleware from "../middlewares/yupValidate.middleware"
+import { postLoginSchema } from "../schemas/postLogin.schema"
 
 const loginRouter = Router()
 
-loginRouter.post("", verifyBodyLoginMiddleware, userLoginController)
+loginRouter.post(
+    "",
+    yupValidateMiddleware(postLoginSchema),
+    userLoginController
+)
 
 export default loginRouter

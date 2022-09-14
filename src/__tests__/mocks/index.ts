@@ -1,25 +1,29 @@
 import { INewsRequest } from "../../interfaces/news"
-import { IUserLogin, IUserRequest, IWriterCreate } from "../../interfaces/users"
+import {
+    IUserLogin,
+    IUserRequest,
+    IWriterRequest
+} from "../../interfaces/users"
 
 export const mockedUser: IUserRequest = {
     email: "erick@gmail.com",
     name: "Erick",
-    password: "1234"
+    password: "1234Aa!"
 }
 export const mockedUserLogin: IUserLogin = {
     email: "erick@gmail.com",
-    password: "1234"
+    password: "1234Aa!"
 }
 export const mockedAdm: IUserRequest = {
     email: "adm@gmail.com",
     name: "adm",
-    password: "senha"
+    password: "1234Aa!"
 }
 export const mockedAdmLogin: IUserLogin = {
     email: "adm@gmail.com",
-    password: "senha"
+    password: "1234Aa!"
 }
-export const mockedWriter: IWriterCreate = {
+export const mockedWriter: IWriterRequest = {
     bio: "amo escrever testes",
     profileImage: "image url",
     userId: ""

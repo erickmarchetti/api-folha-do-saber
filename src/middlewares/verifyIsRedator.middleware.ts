@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express"
+import { AppError } from "../errors/appError"
 
 const verifyIsRedatorMiddleware = async (
     req: Request,
@@ -6,7 +7,7 @@ const verifyIsRedatorMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isWriter) {
-        return res.status(401).json({ message: "User is not redator " })
+        throw new AppError(401, "User is not redator")
     }
     next()
 }

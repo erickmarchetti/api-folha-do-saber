@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import listUserIdService from "../../service/users/listUserId.service"
+import listUserIdService from "../../services/users/listUserId.service"
 
 import { instanceToPlain } from "class-transformer"
 
