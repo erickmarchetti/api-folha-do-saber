@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
+import { AppError } from "../errors/appError"
 
 const authTokenMiddleware = (
     req: Request,
@@ -10,7 +11,7 @@ const authTokenMiddleware = (
     const token = req.headers.authorization
 
     if (!token) {
-        return res.status(401).json({ message: "Token not found !" })
+        throw new AppError(401, "Token not found!")
     }
 
     const splitToken = token.split(" ")
@@ -20,7 +21,7 @@ const authTokenMiddleware = (
         process.env.SECRET_KEY as string,
         (error: any, decoded: any) => {
             if (error) {
-                return res.status(401).json({ message: "Invalid token !" })
+                throw new AppError(401, "Invalid token!")
             }
             req.user = {
                 isAdm: decoded.isAdm,
