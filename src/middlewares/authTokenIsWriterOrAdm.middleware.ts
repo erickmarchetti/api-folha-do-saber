@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express"
+import { AppError } from "../errors/appError"
 
 const authTokenWriterOrAdmMiddleware = async (
     req: Request,
@@ -6,9 +7,7 @@ const authTokenWriterOrAdmMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isWriter && !req.user.isAdm) {
-        return res
-            .status(401)
-            .json({ message: "User is not a writer neither an administrator" })
+        throw new AppError(401, "User is not a writer neither an administrator")
     }
     next()
 }
