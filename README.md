@@ -10,13 +10,35 @@
 
 -   ## Usuário
 
-    ### [Cadastro](#cadastrar-usuário)
+    ### [Cadastro De Usuário](#cadastrar-usuário)
 
-    ### [Login](#logar-usuário)
+    ### [Login De Usuário](#logar-usuário)
 
-    ### [Listagem](#listar-usuário)
+    ### [Listagem De Usuário](#listar-usuário)
 
-    ### [Atualização](#atualizar-usuário)
+    ### [Atualização De Usuário](#atualizar-usuário)
+
+    ### [Deleção De Usuário](#excluir-usuário)
+
+-   ## Writer
+
+    ### [Cadastro De Jornalista](#cadastrar-jornalista)
+
+    ### [Listagem De Jornalista](#listar-jornalista)
+
+    ### [Atualização De Jornalista](#atualizar-jornalista)
+
+    ### [Deleção De Jornalista](#deletar-jornalista)
+
+-   ## News
+
+    ### [Cadastro De Notícia](#cadastrar-notícias)
+
+    ### [Listagem De Notícia](#listar-notícias)
+
+    ### [Atualização De Notícia](#atualizar-notícia)
+
+    ### [Deleção De Notícia](#deletar-notícia)
 
 ---
 
@@ -39,7 +61,7 @@
 Essa rota deverá criar um usuário retornando todos os dados passados no corpo da requisição, exceto o hash de senha. Chave isAdm e isWriter são false por padrão.
 OBS: O primeiro usuário cadastrado do banco de dados será um "isAdm: true", os demais serão "isAdm: false" por padrão.
 
--   Exemplo de resposta:
+-   Exemplo de resposta :
 
     <span style="color:green;">**Status 201 Created**</span>
 
@@ -55,7 +77,7 @@ OBS: O primeiro usuário cadastrado do banco de dados será um "isAdm: true", os
     }
     ```
 
-*   Possíveis Problemas:
+*   Possíveis problemas :
 
     1. Tentando criar um usuario que já existe
 
@@ -131,44 +153,47 @@ Essa rota deve fazer o login do usuário já cadastrado, retornando seu id e seu
     }
     ```
 
-*   Possiveis Problemas:
+*   Possiveis problemas :
 
-    1. Se o email ou a senha estiverem incorretos:
+    1.  Se o email ou a senha estiverem incorretos:
 
         <span style="color:orange;">**Status 403 Forbidden**</span>
 
-        ```json
-        {
-            "status": "Error",
-            "code": 403,
-            "message": "Invalid Credentials"
-        }
-        ```
-
-    2. Tentando logar um usuário sem passar algum dado do corpo da requisição:
-
-        - Requisição sem o campo "email":
-
-            <span style="color:orange;">**Status 400 Bad Request**</span>
-
             ```json
             {
-                "status": "error",
-                "code": 400,
-                "message": "'email' is required"
+                "status": "Error",
+                "code": 403,
+                "message": "Invalid Credentials"
             }
             ```
 
-        - Requisição sem o campo "password":
-          <span style="color:orange;">**Status 400 Bad Request**</span>
+    2.  Tentando logar um usuário sem passar algum dado do corpo da requisição:
 
-            ```json
-            {
-                "status": "error",
-                "code": 400,
-                "message": "'password' is required"
-            }
-            ```
+    -   Requisição sem o campo "email":
+
+        <span style="color:orange;">**Status 400 Bad Request**</span>
+
+              ```json
+              {
+                  "status": "error",
+                  "code": 400,
+                  "message": "'email' is required"
+              }
+              ```
+
+    -   Requisição sem o campo "password":
+
+        <span style="color:orange;">**Status 400 Bad Request**<span>
+
+        ````json
+          {
+               "status": "error",
+               "code": 400,
+               "message": "'password' is required"
+           }
+           ```
+
+        ````
 
     -   **Observação:**
 
@@ -186,7 +211,7 @@ Essa rota deve fazer o login do usuário já cadastrado, retornando seu id e seu
 
 Essa rota deve retornar todos os usuarios se voce tiver token de acesso(admin WRITER).
 
--   Exemplo de Resposta:
+-   Exemplo de Resposta :
 
     <span style="color:green;">**Status 200 OK**</span>
 
@@ -240,7 +265,7 @@ Essa rota deve retornar todos os usuarios se voce tiver token de acesso(admin WR
     ]
     ```
 
-*   Possíveis problemas:
+*   Possíveis problemas :
 
     1. Se o usuário não tiver token com permissão de admin, nem de writer:
 
@@ -278,17 +303,9 @@ Essa rota deve retornar todos os usuarios se voce tiver token de acesso(admin WR
 
 ### Atualizar usuário:
 
----
+`PATCH /users/:id`
 
-// CONTINUAR DAQUI!!!!!
-
----
-
-3- Fazendo Atualização de Usuário
-
-`PATCH /users/:id`<br/>
-
-Exemplo de mudança:
+-   Exemplo de mudança :
 
 ```json
 {
@@ -303,7 +320,7 @@ Se for adiministrador pode modificar de qualquer forma.
 
 Exemplo de resposta:
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 Created**</span>
 
 ```json
 {
@@ -317,49 +334,47 @@ Exemplo de resposta:
 }
 ```
 
-Possiveis problemas:
+-   Possiveis problemas :
 
--   Se o usuario que não for administrador estiver tentando mudar o campo isAdm para true
+    1. Se o usuario que não for administrador estiver tentando mudar o campo isAdm para true.
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
--Se o usuario estiver tentando modificar um usuario que nao seja ele mesmo ou admnistrador
+    2. Se o usuario estiver tentando modificar um usuario que nao seja ele mesmo ou admnistrador.
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
--Se o usuario nãopassar um token
+    3. Se o usuario nãopassar um token
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Token not found !"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Token not found !"
+        }
+        ```
 
-#### Excluir Usuário<br/>
+#### Excluir Usuário
 
-4- Fazendo exclusão de usuario
-
-`DELETE/users/:id`<br/>
+`DELETE/users/:id`
 
 ```json
 //No body
@@ -368,78 +383,77 @@ Possiveis problemas:
 Essa rota deve permitir ao usuario que ele possa exluir ele mesmo se caso desejar, colocando seu id gerado no monento de criacao na url.
 Se for adiministrador pode modificar de qualquer forma.
 
-Exemplo de resposta:
+-   Exemplo de resposta:
 
-**Status 204 No Content**
+<span style="color:green;">**Status 204 Created**</span>
 
-Possiveis Problemas:
+-   Possiveis Problemas :
 
--Se o usuario nao for administrador
+    1. Se o usuario nao for administrador
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
--Se o usuario passar um id invalido
+    2. Se o usuario passar um id invalido
 
-**Status 404 Not Found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 404,
-    "message": "News not found"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 404,
+            "message": "News not found"
+        }
+        ```
 
--Se o usuario nao passar um token de acesso
+    3. Se o usuario nao passar um token de acesso
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Invalid token!"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Invalid token!"
+        }
+        ```
 
--Se o usuario passar um token invalido
-**Status 401 Unauthorized**
+    4. Se o usuario passar um token invalido
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
--Se o usuario quiser deletar o coleguinha
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
-**Status 401 Unauthorized**
+    5. Se o usuario quiser deletar o coleguinha
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Invalid token"
-}
-```
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-### WRITER
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Invalid token"
+        }
+        ```
 
-#### Cadastrar Jornalista <br/>
+## WRITER
 
-1. Fazer cadastro de novo jornalista
+#### Cadastrar Jornalista
 
-`POST/writers` <br/>
+`POST/writers`
 
 ```json
 {
@@ -450,11 +464,11 @@ Possiveis Problemas:
 ```
 
 Essa rota deve permitir que um administrador cadastre um novo escritor.
-OBS: Apenas administradores podem cadastrar novos escritores.
+Observação: Apenas administradores podem cadastrar novos escritores.
 
-Exemplo de resposta:
+-   Exemplo de resposta :
 
-**Status 201 Created**
+<span style="color:orange;">**Status 201 Created**</span>
 
 ```json
 {
@@ -473,84 +487,83 @@ Exemplo de resposta:
 }
 ```
 
-Possiveis Problemas:
+-   Possiveis Problemas :
 
--Se o usuario que não for administrador estiver tentando criar um jornalista
+    1. Se o usuario que não for administrador estiver tentando criar um jornalista
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
+
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "User is not Administrator"
+        }
+        ```
+
+    2. Se o admin nao passar um token
+
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
+
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "invalid token !"
+        }
+        ```
+
+    3. Se o administrador passar um userId invalido
+
+        <span style="color:orange;">**Status 404 Not Found**</span>
+
+        ```json
+        {
+            "status": "Error",
+            "code": 404,
+            "message": "User not found"
+        }
+        ```
+
+    4. Tentando criar um escritor que ja existe
+
+        <span style="color:orange;">**Status 400 Bad Request**</span>
+
+        ```json
+        {
+            "status": "Error",
+            "code": 400,
+            "message": "This user is already a writer"
+        }
+        ```
+
+    5. Tentando criar um escritor sem passar algum dado do corpo da requisicao
+
+        <span style="color:orange;">**Status 400 Bad Request**</span>
+
+        - Requisição sem o campo "name":
+
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "Name is required"
+        }
+        ```
+
+#### listar Jornalista
+
+`GET/writers`
 
 ```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "User is not Administrator"
-}
-```
-
--Se o admin nao passar um token
-**Status 401 Unauthorized**
-
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "invalid tokren !"
-}
-```
-
--Se o administrador passar um userId invalido
-
-**Status 404 Not Found**
-
-```json
-{
-    "status": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
--Tentando criar um escritor que ja existe
-
-**Status 400 Bad Request**
-
-```json
-{
-    "status": "Error",
-    "code": 400,
-    "message": "This user is already a writer"
-}
-```
-
--Tentando criar um escritor sem passar algum dado do corpo da requisicao
-
-**Status 400 Bad Request**
-
-Caso sem name:
-
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Name is required"
-}
-```
-
-#### listar Jornalista <br/>
-
-2. Fazendo Listagem de Jornalistas
-
-`GET/writers` <br/>
-
-```json
-//no body
+ //no body
 ```
 
 Esta rota deve permmitir que apenas administradores possam listar os redatores.
 
-Exemplo de resposta:
+-   Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 [
@@ -571,37 +584,36 @@ Exemplo de resposta:
 ]
 ```
 
-Possives problemas:
+-   Possives problemas :
 
--Se um usuario que nao for administrador estiver tentando listar os jornalistas
+    1.  Se um usuario que nao for administrador estiver tentando listar os jornalistas
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "User is not administrator"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "User is not administrator"
+        }
+        ```
 
--se nao passar um token
-**status 401 Unauthorized**
+    2.  Se nao passar um token
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Invalid token !"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Invalid token !"
+        }
+        ```
 
-#### Atualizar Jornalista <br/>
+#### Atualizar Jornalista
 
-3- Fazendo Atualização de Um Jornalista
+`PATCH /writers/:id`
 
-`PATCH /writers/:id`<br/>
-Exemplo de mudança:
+-   Exemplo de mudança :
 
 ```json
 {
@@ -611,11 +623,11 @@ Exemplo de mudança:
 ```
 
 Essa rota recebe o id do jornalista que deseja alterar seus dados no parametro da requisição
-OBS:Apenas o administrador e o joprnalista podem fazer a modificacao
+Observação: Apenas o administrador e o joprnalista podem fazer a modificacao
 
-Exemplo de resposta:
+-   Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 {
@@ -634,36 +646,35 @@ Exemplo de resposta:
 }
 ```
 
-Possiveis problemas:
+-   Possiveis problemas :
 
--   Se o escritor estiver tentando modificar um redator que nao seja ele mesmo
+    1.  Se o escritor estiver tentando modificar um redator que nao seja ele mesmo
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
--   Se o usuario nao passar um token
-    **Status 401 Unauthorized**
+    2.  Se o usuario nao passar um token
 
-```json
-{
-    "status": "Error",
-    "code": 401,
-    "message": "Unauthorized!"
-}
-```
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-#### Deletar Jornalista<br/>
+        ```json
+        {
+            "status": "Error",
+            "code": 401,
+            "message": "Unauthorized!"
+        }
+        ```
 
-3- Fazendo Deleção de Um Jornalista
+#### Deletar Jornalista
 
-`DELETE/users/:id`<br/>
+`DELETE/users/:id`
 
 ```json
 //No body
@@ -672,43 +683,41 @@ Possiveis problemas:
 Essa rota deve permitir ao usuario que ele possa exluir ele mesmo se caso desejar, colocando seu id gerado no monento de criacao na url, se for adiministrador pode modificar de qualquer forma.
 OBS:O delete do jornalista é feito pelo delete de usuario.
 
-Exemplo de resposta:
+-   Exemplo de resposta :
 
-**Status 204 Not Content**
+<span style="color:green;">**Status 204 Not Content**</span>
 
-Possiveis Problemas:
+-   Possiveis Problemas:
 
--   Se o usuario nao for administrador
+    1.  Se o usuario nao for administrador
 
-**Status 403 Forbidden**
+        <span style="color:orange;">**Status 403 Not Forbidden**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 403,
-    "message": "Missing adm permissions"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 403,
+            "message": "Missing adm permissions"
+        }
+        ```
 
--   Se o usuario passar um id invalido
+    2.  Se o usuario passar um id invalido
 
-**Status 404 Not found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 404,
+            "message": "User not found"
+        }
+        ```
 
-### NEWS
+## NEWS
 
-#### Cadastrar Notícias <br/>
+#### Cadastrar Notícias
 
-1. Fazendo Cadastro de Nova Notícia
-
-`POST/news`<br/>
+`POST/news`
 
 ```json
 {
@@ -723,9 +732,9 @@ Possiveis Problemas:
 Essa rota permite ao escritor criar noticias.
 Apenas url e categoria não precisam ser passados no corpo da requisição.
 
-Exemplo de resposta:
+-   Exemplo de resposta :
 
-**Status 201 Created**
+<span style="color:green;">**Status 201 Created**</span>
 
 ```json
 {
@@ -757,73 +766,71 @@ Exemplo de resposta:
 }
 ```
 
-Possiveis Problemas
+-   Possiveis problemas :
 
--Caso nao seja passado title no corpo da requisição
+    1.  Caso nao seja passado title no corpo da requisição
 
-**Status 400 Bad Request**
+        <span style="color:orange;">**Status 400 Bad Request**</span>
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Title is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "Title is required"
+        }
+        ```
 
--Caso nao seja passado subtitle no corpo da requisição
+    2.  Caso nao seja passado subtitle no corpo da requisição
 
-**Status 400 Bad Request**
+        <span style="color:orange;">**Status 400 Bad Request**</span>
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Subtitle is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "Subtitle is required"
+        }
+        ```
 
--Caso nao seja passado body no corpo da requisição
+    3.  Caso nao seja passado body no corpo da requisição
 
-**Status 400 Bad Request**
+        <span style="color:orange;">**Status 400 Bad Request**</span>
 
-```json
-{
-    "status": "error",
-    "code": 400,
-    "message": "Body is required"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "Body is required"
+        }
+        ```
 
--Caso o usuario nao seja um jornalista
+    4.  Caso o usuario nao seja um jornalista
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "error",
-    "code": 401,
-    "message": "User is not redator "
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "User is not redator "
+        }
+        ```
 
--Se o jornalista não passar um token
+    5.  Se o jornalista não passar um token
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
 
-```json
-{
-    "status": "error",
-    "code": 401,
-    "message": "Invalid token !"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "Invalid token !"
+        }
+        ```
 
-#### Listar Notícias <br/>
+#### Listar Notícias
 
-2.1. Fazendo Listagem de Noticias
-
-`GET/news`<br/>
+`GET/news`
 
 ```json
 //NO BODY
@@ -831,9 +838,9 @@ Possiveis Problemas
 
 Essa rota permite que os usuários tenham acesso a todas as noticias publicadas
 
-Exemplo de resposta
+-   Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 [
@@ -867,17 +874,17 @@ Exemplo de resposta
 ]
 ```
 
-Possiveis Problemas:
+-   Possiveis Problemas :
 
--Se não houver noticias retornará um array vazio
+    1.  Se não houver noticias retornará um array vazio
 
-```json
-[]
-```
+        ```json
+        []
+        ```
 
-2.2. Fazendo Listagem de Todas as Notícias Pelo Id do Jornalista
+---
 
-`GET/news/:id/writers` <br/>
+`GET/news/:id/writers`
 
 ```json
 //NO BODY
@@ -885,9 +892,9 @@ Possiveis Problemas:
 
 Essa rota permite que os usuários tenham acesso a todas as noticias relacionadas ao id do jornalista
 
-Exemplo de resposta
+-   Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 [
@@ -921,39 +928,39 @@ Exemplo de resposta
 ]
 ```
 
-Possiveis problemas:
+-   Possiveis problemas :
 
--Se não houver noticias retornará um array vazio
+    1.  Se não houver noticias retornará um array vazio
 
-```json
-[]
-```
+        ```json
+        []
+        ```
 
--Se o id do jornalista for invalido
+    2.  Se o id do jornalista for invalido
 
-**Status 404 Not Found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "Error",
-    "code": 404,
-    "message": "Writer not found"
-}
-```
+        ```json
+        {
+            "status": "Error",
+            "code": 404,
+            "message": "Writer not found"
+        }
+        ```
 
--Se nao for passado um id
+    3.  Se nao for passado um id
 
-**Status 404 not found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "error",
-    "code": 404,
-    "message": "News not found"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 404,
+            "message": "News not found"
+        }
+        ```
 
-2.3. Fazendo Listagem de Todas as Notícias por Categoria
+---
 
 `GET/news/:categoryName/categories`<br/>
 
@@ -964,9 +971,9 @@ Possiveis problemas:
 Essa rota permite que os usuários tenham acesso a todas as noticias por categoria
 OBS: Nome da categoria tem que ser exatamente igual a categoria existente.
 
-Exemplo de resposta
+-   Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 [
@@ -1000,21 +1007,21 @@ Exemplo de resposta
 ]
 ```
 
-possiveis problemas
+-   Possiveis problemas :
 
--Caso a categoria nÃo exista, ou noticia vinculada a ela
+    1.  Caso a categoria nÃo exista, ou noticia vinculada a ela
 
-**Status 404 News not Found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "error",
-    "code": 404,
-    "message": "News not found"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 404,
+            "message": "News not found"
+        }
+        ```
 
-2.4. Fazendo Listagem de Todas as Notícias Por Id da Notiícia
+---
 
 `GET/news/:id` <br/>
 
@@ -1024,9 +1031,9 @@ possiveis problemas
 
 Essa rota permite que os usuários tenham acesso a todas as noticias pelo seu id
 
-Exemplo de resposta
+Exemplo de resposta :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 [
@@ -1060,23 +1067,21 @@ Exemplo de resposta
 ]
 ```
 
-Possiveis Problemas:
+-   Possiveis Problemas :
 
--Caso o usuario passe um id erraDO
+    1.  Caso o usuario passe um id errado
 
-**Status 404 Not Found**
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "error",
-    "code": 404,
-    "message": "News not found"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 404,
+            "message": "News not found"
+        }
+        ```
 
 ### Atualizar Notícia
-
-1. Fazer atualizacao de noticia
 
 `PATCH/news/:id` <br/>
 
@@ -1091,11 +1096,11 @@ Possiveis Problemas:
 ```
 
 Essa rota permite que o jornalista edite os dados da sua noticia se desejar
-OBS: É necessário passar o id da noticia e o token de jornalista, e a unica pessoa que pode editar é o proprio jornalista
+Observação: É necessário passar o id da noticia e o token de jornalista, e a unica pessoa que pode editar é o proprio jornalista
 
-Exemplo de mudança:
+-   Exemplo de mudança :
 
-**Status 200 OK**
+<span style="color:green;">**Status 200 OK**</span>
 
 ```json
 {
@@ -1127,45 +1132,45 @@ Exemplo de mudança:
 }
 ```
 
-possiveis erros :
+-   Possiveis problemas :
 
--Se o escritor, ou usuario qualquer tentar alterar uma noticia que nao é dele
+    1.  Se o escritor, ou usuario qualquer tentar alterar uma noticia que nao é dele
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Not Unauthorized**</span>
 
-```json
-{
-    "status": "error",
-    "code": 401,
-    "message": "User is not redator "
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "User is not redator "
+        }
+        ```
 
--Passando um id errado
-**Status 404 Not Found**
+    2.  Passando um id errado
 
-```json
-{
-    "status": "error",
-    "code": 404,
-    "message": "Not Found"
-}
-```
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
--Sem um token de writer
-**Status 401 Unauthorized**
+        ```json
+        {
+            "status": "error",
+            "code": 404,
+            "message": "Not Found"
+        }
+        ```
 
-```json
-{
-    "status": "error",
-    "code": 401,
-    "message": "invalid topken "
-}
-```
+    3.  Sem um token de writer
 
-### Excluir Notícia
+        <span style="color:orange;">**Status 401 Not Unauthorized**</span>
 
-1. Fazer delecao de noticia
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "invalid topken "
+        }
+        ```
+
+### Deletar Notícia
 
 `DELETE/news/:id` <br/>
 
@@ -1176,31 +1181,33 @@ possiveis erros :
 Essa rota permite que apenas o jornalista e o administrador possam excluir a noticia publicada
 Exemplon de Resposta:
 
-**Status 204 no content**
+<span style="color:orange;">**Status 204 Not Content**</span>
 
-possiveis problemas
+-   Possiveis problemas :
 
--Usuario comum tentando excluir a noticia
+    1.  Usuario comum tentando excluir a noticia
 
-**Status 401 Unauthorized**
+        <span style="color:orange;">**Status 401 Not Unauthorized**</span>
 
-```json
-{
-    "status": "error",
-    "code": 401,
-    "message": "Unauthorized"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "Unauthorized"
+        }
+        ```
 
--Id invalido
-**Status 404 Not Found**
+    2.  Passsando um id inválido
+        <span style="color:orange;">**Status 404 Not Found**</span>
 
-```json
-{
-    "status": "error",
-    "code": 404,
-    "message": "News not found"
-}
-```
+        ```json
+        {
+            "status": "error",
+            "code": 404,
+            "message": "News not found"
+        }
+        ```
 
-Equipe Api Folha do Saber
+---
+
+# Equipe Api Folha do Saber
