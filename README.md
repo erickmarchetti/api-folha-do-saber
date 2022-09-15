@@ -1,6 +1,5 @@
 # API Folha do Saber
 
-
 ## Base URL:
 
     https://api-folha-do-saber.herokuapp.com/
