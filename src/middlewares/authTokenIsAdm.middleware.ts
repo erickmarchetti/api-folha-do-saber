@@ -7,7 +7,7 @@ const authTokenAdmMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isAdm) {
-        throw new AppError(401, "User is not administrator")
+        throw new AppError(401, "User is not an administrator.")
     }
     next()
 }

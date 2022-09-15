@@ -19,7 +19,7 @@ const userLoginService = async ({ email, password }: IUserLogin) => {
     const comparePassword = bcrypt.compareSync(password, userLogin.password)
 
     if (!comparePassword) {
-        throw new AppError(403, "Invalid credentials")
+        throw new AppError(403, "Invalid credentials.")
     }
 
     const token = jwt.sign(

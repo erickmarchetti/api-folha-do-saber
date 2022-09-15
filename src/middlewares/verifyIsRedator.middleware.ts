@@ -7,7 +7,7 @@ const verifyIsRedatorMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isWriter) {
-        throw new AppError(401, "User is not redator")
+        throw new AppError(401, "User is not a writer.")
     }
     next()
 }
