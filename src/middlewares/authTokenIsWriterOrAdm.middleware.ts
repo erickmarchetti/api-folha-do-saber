@@ -7,7 +7,10 @@ const authTokenWriterOrAdmMiddleware = async (
     next: NextFunction
 ) => {
     if (!req.user.isWriter && !req.user.isAdm) {
-        throw new AppError(401, "User is not a writer neither an administrator")
+        throw new AppError(
+            401,
+            "User is not a writer neither an administrator."
+        )
     }
     next()
 }

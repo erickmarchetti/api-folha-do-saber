@@ -20,7 +20,7 @@ const createWriterService = async ({
     const writerAlreadyExists = await writerRepository.findOneBy({ user })
 
     if (writerAlreadyExists) {
-        throw new AppError(400, "This user is already a writer.")
+        throw new AppError(400, "This writer is already registered.")
     }
 
     await userRepository.update(user, { isWriter: true })

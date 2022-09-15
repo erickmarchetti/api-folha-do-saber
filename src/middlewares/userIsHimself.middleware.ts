@@ -8,7 +8,7 @@ const userIsHimselfMiddleware = async (
     next: NextFunction
 ) => {
     if (req.user.userId !== req.params.id && !req.user.isAdm) {
-        throw new AppError(401, "Unauthorized")
+        throw new AppError(401, "Unauthorized.")
     }
 
     next()
