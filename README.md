@@ -1,6 +1,20 @@
 # API Folha do Saber
 
-## Base URL:
+## Descrição
+
+### Foco:
+
+Jornalistas e escritores que desejam criar seu próprio portal de notícias de forma simples, com total liberdade na criação do frontend.
+
+### Problema:
+
+Nas grandes plataformas, o frontend é limitado e a administração do portal geralmente é complexa e feita por terceiros.
+
+### Solução:
+
+API completa, com todas as features necessárias para o jornalista ter seu próprio portal sem se prender a uma plataforma engessada. A administração e o gerenciamento de conteúdo poderão ser feitos de forma simples e intuitiva.
+
+## Base URL
 
     https://api-folha-do-saber.herokuapp.com/
 
@@ -27,10 +41,6 @@
     ### [Listagem De Jornalista](#listar-jornalista)
 
     ### [Atualização De Jornalista](#atualizar-jornalista)
-
-```
-
-```
 
     ### [Deleção De Jornalista](#deletar-jornalista)
 
@@ -189,15 +199,13 @@ Essa rota faz o login do usuário já cadastrado, retornando seu id e seu token 
 
         <span style="color:orange;">**Status 400 Bad Request**<span>
 
-        ````json
-          {
-               "status": "error",
-               "code": 400,
-               "message": "'password' is required"
-           }
-           ```
-
-        ````
+        ```json
+        {
+            "status": "error",
+            "code": 400,
+            "message": "'password' is required"
+        }
+        ```
 
     -   **Observação:**
 
@@ -574,7 +582,7 @@ Essa rota deve permitir que um administrador cadastre um novo escritor.
 
         -   No caso de múltiplos campos faltantes na requisição, será gerada uma mensagem de erro concatenada, informando todos os campos faltantes.
 
-### Listar jornalista:
+### Listar jornalistas:
 
 `GET /writers`
 
@@ -588,35 +596,62 @@ Esta rota deve permmitir que apenas administradores possam listar os redatores.
 
     <span style="color:green;">**Status 200 OK**</span>
 
--   <details></details>
-    professor-home-professor-com-anos-experiencia-ensina-informatica-rotinas-administrativas-presencial-ead.jpg",
-                "id": "e118d585-35ae-4438-b233-e3e52061960c",
-                "bio": "Jornalista e radialista, Update ele mesmo",
-                "user": {
-                    "createdAt": "2022-09-12T13:06:05.853Z",
-                    "updatedAt": "2022-09-12T13:06:05.853Z",
-                    "id": "794d3577-b19e-4fe5-9a36-4f5404a9591f",
-                    "name": "Bruno Writer",
-                    "email": "writer@bruno.com",
-                    "isAdm": false,
-                    "isWriter": true
-                }
-            }            ```json
-                []
-                ```
-
-        3.  Se o usuário informar um token inválido:
-
-            <span style="color:orange;">**Status 401 Unauthorized**</span>
-
-            ```json
-            {
-                "status": "error",
-                "code": 401,
-                "message": "Invalid token!"
+    ```json
+    [
+        {
+            "profileImage": "https://www.superprof.com.br/imagens/anuncios/professor-home-professor-com-anos-experiencia-ensina-informatica-rotinas-administrativas-presencial-ead.jpg",
+            "id": "e118d585-35ae-4438-b233-e3e52061960c",
+            "bio": "Jornalista e radialista, Update ele mesmo",
+            "user": {
+                "createdAt": "2022-09-12T13:06:05.853Z",
+                "updatedAt": "2022-09-12T13:06:05.853Z",
+                "id": "794d3577-b19e-4fe5-9a36-4f5404a9591f",
+                "name": "Bruno Writer",
+                "email": "writer@bruno.com",
+                "isAdm": false,
+                "isWriter": true
             }
-            ```
-        ````
+        }
+    ]
+    ```
+
+-   Possíveis problemas:
+
+    1.  Se o usuário não possuir permissão de admin:
+
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
+
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "User is not an administrator."
+        }
+        ```
+
+    2.  Se o usuário não informar um token:
+
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
+
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "Token not found!"
+        }
+        ```
+
+    3.  Se o usuário informar um token inválido:
+
+        <span style="color:orange;">**Status 401 Unauthorized**</span>
+
+        ```json
+        {
+            "status": "error",
+            "code": 401,
+            "message": "Invalid token!"
+        }
+        ```
 
 ### Atualizar jornalista:
 
@@ -863,14 +898,11 @@ Essa rota permite que os usuários tenham acesso a todas as noticias publicadas.
     ```
 
 *   **Observação:**
+    Caso não seja encontrada nenhuma notícia, será retornado um array vazio:
 
-```
-
-```
-
-        ```json
-        []
-        ```
+    ```json
+    []
+    ```
 
 #### Listar notícias por categoria
 
