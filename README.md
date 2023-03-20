@@ -14,10 +14,6 @@ Nas grandes plataformas, o frontend é limitado e a administração do portal ge
 
 API completa, com todas as features necessárias para o jornalista ter seu próprio portal sem se prender a uma plataforma engessada. A administração e o gerenciamento de conteúdo poderão ser feitos de forma simples e intuitiva.
 
-## Base URL
-
-    https://api-folha-do-saber.herokuapp.com/
-
 ---
 
 # Índice
@@ -53,6 +49,41 @@ API completa, com todas as features necessárias para o jornalista ter seu próp
     ### [Atualização De Notícia](#atualizar-notícia)
 
     ### [Deleção De Notícia](#deletar-notícia)
+
+---
+
+# Preparativos
+
+### 1. Instale as dependências
+
+Após fazer o clone do projeto instale  as dependências:
+
+```shell
+yarn
+```
+
+### 2. Crie um arquivo .env
+
+Clone o arquivo .env.example e edite ele com os seus dados,<br/>
+Em seguida renomeie a copia para .env
+
+### 3. Execute as migrações para realizar a persistência de dados
+
+```shell
+yarn typeorm migration:run -d ./src/data-source.ts
+```
+
+### 4. Rode os testes
+
+```shell
+yarn test
+```
+
+### 5. Execute a aplicação
+
+```shell
+yarn dev
+```
 
 ---
 
